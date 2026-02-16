@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gym Dashboard - WRKOUT</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#1a3224",
+                        "border-dark": "#244732",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside
+            class="hidden md:flex w-64 flex-col bg-white dark:bg-[#15281e] border-r border-slate-200 dark:border-border-dark">
+            <div class="p-6">
+                <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined text-background-dark font-bold">bolt</span>
+                    </div>
+                    <span class="text-xl font-black tracking-tighter">WRKOUT</span>
+                </div>
+            </div>
+            <nav class="flex-1 px-4 space-y-1">
+                <a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium bg-primary/10 text-primary"
+                    href="#">
+                    <span class="material-symbols-outlined filled">dashboard</span>
+                    Gym Overview
+                </a>
+                <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">groups</span>
+                    Trainers
+                </a>
+                <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">fitness_center</span>
+                    Equipment
+                </a>
+                <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                    href="#">
+                    <span class="material-symbols-outlined">bar_chart</span>
+                    Revenue
+                </a>
+                <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                    href="settings.html">
+                    <span class="material-symbols-outlined">settings</span>
+                    Gym Settings
+                </a>
+            </nav>
+            <div class="p-4 border-t border-slate-200 dark:border-border-dark">
+                <a href="#"
+                    class="logout-btn flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-red-500/10 hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined">logout</span>
+                    Sign Out
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark relative">
+            <header
+                class="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-slate-200 dark:border-border-dark bg-white/80 dark:bg-[#112117]/80 backdrop-blur px-6">
+                <div>
+                    <h1 class="text-xl font-bold">Gym Dashboard</h1>
+                    <p class="text-xs text-gray-500">Manage your facility and staff</p>
+                </div>
+                <!-- User Menu Placeholder -->
+                <div
+                    class="h-9 w-9 bg-surface-dark rounded-full border border-border-dark flex items-center justify-center">
+                    <span class="material-symbols-outlined text-gray-400 text-sm">apartment</span>
+                </div>
+            </header>
+
+            <div class="p-6 max-w-7xl mx-auto space-y-6">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <!-- Active Members -->
+                    <div
+                        class="relative overflow-hidden rounded-2xl bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark p-6">
+                        <dt>
+                            <div class="absolute rounded-md bg-primary/10 p-3">
+                                <span class="material-symbols-outlined text-primary">groups</span>
+                            </div>
+                            <p class="ml-16 truncate text-sm font-medium text-gray-500 dark:text-gray-400">Total Members
+                            </p>
+                        </dt>
+                        <dd class="ml-16 flex items-baseline">
+                            <p class="text-2xl font-semibold text-gray-900 dark:text-white">124</p>
+                            <p class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
+                                <span class="material-symbols-outlined text-sm self-center shrink-0">arrow_upward</span>
+                                <span class="sr-only">Increased by</span>
+                                12%
+                            </p>
+                        </dd>
+                    </div>
+                    <!-- Active Trainers -->
+                    <div
+                        class="relative overflow-hidden rounded-2xl bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark p-6">
+                        <dt>
+                            <div class="absolute rounded-md bg-blue-500/10 p-3">
+                                <span class="material-symbols-outlined text-blue-500">badge</span>
+                            </div>
+                            <p class="ml-16 truncate text-sm font-medium text-gray-500 dark:text-gray-400">Active
+                                Trainers</p>
+                        </dt>
+                        <dd class="ml-16 flex items-baseline">
+                            <p class="text-2xl font-semibold text-gray-900 dark:text-white">8</p>
+                        </dd>
+                    </div>
+                </div>
+
+                <!-- Empty State / Placeholder Content -->
+                <div class="rounded-2xl border border-dashed border-border-dark bg-surface-dark/30 p-12 text-center">
+                    <span class="material-symbols-outlined text-4xl text-gray-600 mb-3">construction</span>
+                    <h3 class="text-lg font-medium text-gray-300">Gym Management features coming soon</h3>
+                    <p class="text-gray-500">This dashboard will allow you to manage subscriptions, equipment
+                        maintenance, and staff schedules.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Guard: Redirect if not Gym
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = auth.checkSession();
+            if (user && user.role !== 'gym') {
+                // Redirect to appropriate dashboard
+                if (user.role === 'trainer') window.location.href = 'trainer-dashboard.html';
+                else window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

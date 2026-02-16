@@ -1,0 +1,543 @@
+<!-- Trainer / Gym Dashboard -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Trainer Dashboard - WRKOUT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Guard: Redirect if not logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = auth.checkSession();
+            // TODO: If we want strict role-based access:
+            // if (user && user.role !== 'trainer') window.location.href = 'index.html';
+        });
+    </script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#1c3326",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 font-display antialiased">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside
+            class="hidden w-64 flex-col border-r border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark lg:flex">
+            <div class="flex h-16 items-center px-6 border-b border-slate-200 dark:border-slate-800">
+                <div class="flex items-center gap-2 text-primary">
+                    <span class="material-symbols-outlined text-3xl">fitness_center</span>
+                    <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">WRKOUT SaaS</span>
+                </div>
+            </div>
+            <div class="flex flex-1 flex-col justify-between px-4 py-6">
+                <nav class="space-y-1">
+                    <a class="group flex items-center gap-3 rounded-lg bg-surface-dark px-3 py-2.5 text-sm font-medium text-white shadow-sm ring-1 ring-white/10"
+                        href="trainer-dashboard.html">
+                        <span class="material-symbols-outlined text-primary">dashboard</span>
+                        Dashboard
+                    </a>
+                    <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                        href="clients.html">
+                        <span class="material-symbols-outlined">groups</span>
+                        Clients
+                    </a>
+                    <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                        href="workout-builder.html">
+                        <span class="material-symbols-outlined">exercise</span>
+                        Workout Plans
+                    </a>
+                    <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined">description</span>
+                        Templates
+                    </a>
+                    <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined">calendar_month</span>
+                        Calendar
+                    </a>
+                    <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                        href="#">
+                        <div class="relative">
+                            <span class="material-symbols-outlined">chat</span>
+                            <span
+                                class="absolute -right-1 -top-1 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-primary ring-2 ring-white dark:ring-background-dark"></span>
+                        </div>
+                        Messages
+                    </a>
+                </nav>
+                <div class="space-y-4">
+                    <div class="px-3">
+                        <p
+                            class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-500 mb-2">
+                            Settings</p>
+                        <a class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-surface-dark dark:hover:text-white transition-colors"
+                            href="settings.html">
+                            <span class="material-symbols-outlined">settings</span>
+                            Settings
+                        </a>
+                    </div>
+                    <div class="mt-auto border-t border-slate-200 dark:border-slate-800 pt-4">
+                        <div class="flex items-center gap-3 px-3">
+                            <img alt="Trainer profile picture"
+                                class="h-10 w-10 rounded-full object-cover ring-2 ring-white/10"
+                                data-alt="Close up portrait of a smiling man"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuApFl0z9ZiQHX9_7f3r_CBeM8pS4ESEQdcwFTeCNFCfYefRY3lamNKEtvQhjZi1lFn3G1BhWRxi4HqiEntkodOIClrghFWoMP6_F_IyPzP9dm5lbo59Pw9bztBmItVSGMPvqEZWwLqTPXJpLZaGp4BfiBC_KlGYS6hph9BkaGLq3WwUwjyzcBOKoLrQmGkagm8IpRwFxpdGXEcVd26ffn68sCImgb1S9cWprTR-uRtkpdlw906xwfnEtOppuvmajvC24-GK0Gt4SfP1" />
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium text-slate-900 dark:text-white">Alex Johnson</span>
+                                <span class="text-xs text-slate-500 dark:text-slate-400">Head Trainer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background-light dark:bg-background-dark">
+            <!-- Header -->
+            <header
+                class="flex h-16 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-6">
+                <div class="flex items-center gap-4 lg:hidden">
+                    <button class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <span class="text-lg font-bold text-slate-900 dark:text-white">WRKOUT</span>
+                </div>
+                <div class="hidden lg:block">
+                    <h1 class="text-xl font-bold text-slate-900 dark:text-white">Trainer Dashboard</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Good morning, Alex. You have 3 pending
+                        check-ins.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative hidden sm:block">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">
+                            <span class="material-symbols-outlined text-[20px]">search</span>
+                        </span>
+                        <input
+                            class="h-9 w-64 rounded-full border-0 bg-slate-100 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-500 focus:ring-2 focus:ring-primary dark:bg-surface-dark dark:text-white dark:placeholder:text-slate-500"
+                            placeholder="Search clients..." type="text" />
+                    </div>
+                    <button
+                        class="relative rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-surface-dark transition-colors">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span
+                            class="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-background-dark"></span>
+                    </button>
+                    <button
+                        class="flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-bold text-slate-900 shadow-sm hover:bg-opacity-90 transition-colors">
+                        <span class="material-symbols-outlined mr-2 text-[20px]">add</span>
+                        New Client
+                    </button>
+                </div>
+            </header>
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                <div class="mx-auto max-w-7xl space-y-6">
+                    <!-- Hero Banner -->
+                    <div class="relative overflow-hidden rounded-xl bg-surface-dark min-h-[180px] shadow-lg group">
+                        <div class="absolute inset-0 z-0">
+                            <img alt="Background of gym weights and dumbbells"
+                                class="h-full w-full object-cover opacity-40 transition-transform duration-700 group-hover:scale-105"
+                                data-alt="Dark moody gym background with weights"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXSf6go960Uquhsw_INW1doI5F56UBZIPnn5J1FL_1-Vj3gzLQBX0PA7X_WZDWn0_LLSxzOiPb9SgObnaonknAdDhVq7bRQTZij1RPTrs1bt34bINVdhjE4fsB1SbXsJUVCrztLKq2eJjYkgTP1ocODbB_0wKQrE5jL8ChFSJruRHbc6VOjWPLaf-P2zaD98ZF4KidtkZhVd37WF_ZCu4IpA2Kc5VWFUaNNDZFF6O8EBYJiIlSc34kh_mr3Aju_4o7aG4FIf" />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-background-dark via-background-dark/80 to-transparent">
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex h-full flex-col justify-center p-6 sm:p-8">
+                            <h2 class="text-3xl font-bold text-white mb-2">Your Weekly Overview</h2>
+                            <p class="max-w-xl text-slate-300">You're on track! Client adherence is up <span
+                                    class="text-primary font-semibold">12%</span> this week compared to last month. Keep
+                                pushing the momentum.</p>
+                            <div class="mt-6 flex gap-3">
+                                <button class="rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm
+                                hover:bg-white/20 transition-colors"
+                                    onclick="window.location.href='analytics.html'">View
+                                    Reports</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <!-- Card 1 -->
+                        <div class="rounded-xl bg-surface-dark p-6 shadow-sm ring-1 ring-white/5">
+                            <div class="flex items-center justify-between">
+                                <div class="rounded-lg bg-primary/20 p-2 text-primary">
+                                    <span class="material-symbols-outlined">group</span>
+                                </div>
+                                <span class="flex items-center gap-1 text-sm font-medium text-green-400">
+                                    <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                                    +12%
+                                </span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-sm font-medium text-slate-400">Active Clients</p>
+                                <h3 class="text-2xl font-bold text-white">42</h3>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="rounded-xl bg-surface-dark p-6 shadow-sm ring-1 ring-white/5">
+                            <div class="flex items-center justify-between">
+                                <div class="rounded-lg bg-blue-500/20 p-2 text-blue-400">
+                                    <span class="material-symbols-outlined">assignment</span>
+                                </div>
+                                <span class="flex items-center gap-1 text-sm font-medium text-green-400">
+                                    <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                                    +5%
+                                </span>
+                            </div>
+                            <div class="mt-4">
+                                <h1 class="text-white text-base font-medium leading-normal">WRKOUT</h1>
+                                <h3 class="text-2xl font-bold text-white">156</h3>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="rounded-xl bg-surface-dark p-6 shadow-sm ring-1 ring-white/5">
+                            <div class="flex items-center justify-between">
+                                <div class="rounded-lg bg-orange-500/20 p-2 text-orange-400">
+                                    <span class="material-symbols-outlined">check_circle</span>
+                                </div>
+                                <span class="flex items-center gap-1 text-sm font-medium text-green-400">
+                                    <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                                    +2.4%
+                                </span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-sm font-medium text-slate-400">Completion Rate</p>
+                                <h3 class="text-2xl font-bold text-white">88%</h3>
+                            </div>
+                        </div>
+                        <!-- Card 4 (Mini Graph) -->
+                        <div
+                            class="rounded-xl bg-surface-dark p-6 shadow-sm ring-1 ring-white/5 relative overflow-hidden">
+                            <div class="absolute right-0 top-0 h-full w-1/2 opacity-20">
+                                <svg class="h-full w-full" preserveaspectratio="none" viewbox="0 0 200 100">
+                                    <path d="M0 80 Q 50 20 100 50 T 200 20" fill="none" stroke="#19e66b"
+                                        stroke-width="4"></path>
+                                    <path d="M0 80 Q 50 20 100 50 T 200 20 V 100 H 0 Z" fill="url(#gradient)"
+                                        opacity="0.5"></path>
+                                    <defs>
+                                        <lineargradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                                            <stop offset="0%" stop-color="#19e66b"></stop>
+                                            <stop offset="100%" stop-color="#19e66b" stop-opacity="0"></stop>
+                                        </lineargradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="rounded-lg bg-purple-500/20 p-2 w-fit text-purple-400 mb-4">
+                                    <span class="material-symbols-outlined">payments</span>
+                                </div>
+                                <p class="text-sm font-medium text-slate-400">Revenue (MTD)</p>
+                                <h3 class="text-2xl font-bold text-white">$4,250</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Main Grid -->
+                    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                        <!-- Recent Activity & Chart Area -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- Graph Section -->
+                            <div class="rounded-xl bg-surface-dark p-6 shadow-sm ring-1 ring-white/5">
+                                <div class="mb-6 flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Weekly Completion Rate</h3>
+                                        <p class="text-sm text-slate-400">Client adherence over the last 7 days</p>
+                                    </div>
+                                    <select
+                                        class="rounded-lg border-0 bg-background-dark py-1.5 pl-3 pr-8 text-xs text-white ring-1 ring-white/10 focus:ring-2 focus:ring-primary">
+                                        <option>Last 7 Days</option>
+                                        <option>Last 30 Days</option>
+                                    </select>
+                                </div>
+                                <div class="relative h-64 w-full">
+                                    <!-- Graph SVG -->
+                                    <svg class="h-full w-full overflow-visible" preserveaspectratio="none"
+                                        viewbox="0 0 800 300">
+                                        <defs>
+                                            <lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                                <stop offset="0%" stop-color="#19e66b" stop-opacity="0.2"></stop>
+                                                <stop offset="100%" stop-color="#19e66b" stop-opacity="0"></stop>
+                                            </lineargradient>
+                                        </defs>
+                                        <!-- Grid Lines -->
+                                        <line stroke="#334155" stroke-dasharray="4 4" x1="0" x2="800" y1="0" y2="0">
+                                        </line>
+                                        <line stroke="#334155" stroke-dasharray="4 4" x1="0" x2="800" y1="75" y2="75">
+                                        </line>
+                                        <line stroke="#334155" stroke-dasharray="4 4" x1="0" x2="800" y1="150" y2="150">
+                                        </line>
+                                        <line stroke="#334155" stroke-dasharray="4 4" x1="0" x2="800" y1="225" y2="225">
+                                        </line>
+                                        <line stroke="#334155" stroke-dasharray="4 4" x1="0" x2="800" y1="300" y2="300">
+                                        </line>
+                                        <!-- The Data Line -->
+                                        <!-- Adjusted path for a nice curve -->
+                                        <path
+                                            d="M0,200 C100,200 100,100 200,120 C300,140 300,250 400,180 C500,110 500,50 600,80 C700,110 700,20 800,40"
+                                            fill="none" stroke="#19e66b" stroke-width="3"
+                                            vector-effect="non-scaling-stroke"></path>
+                                        <!-- Area Fill -->
+                                        <path
+                                            d="M0,200 C100,200 100,100 200,120 C300,140 300,250 400,180 C500,110 500,50 600,80 C700,110 700,20 800,40 V 300 H 0 Z"
+                                            fill="url(#chartGradient)" stroke="none"></path>
+                                        <!-- Data Points -->
+                                        <circle cx="200" cy="120" fill="#112117" r="4" stroke="#19e66b"
+                                            stroke-width="2"></circle>
+                                        <circle cx="400" cy="180" fill="#112117" r="4" stroke="#19e66b"
+                                            stroke-width="2"></circle>
+                                        <circle cx="600" cy="80" fill="#112117" r="4" stroke="#19e66b" stroke-width="2">
+                                        </circle>
+                                    </svg>
+                                    <!-- X Axis Labels -->
+                                    <div
+                                        class="absolute bottom-0 left-0 right-0 flex justify-between pt-2 text-xs font-medium text-slate-500">
+                                        <span>Mon</span>
+                                        <span>Tue</span>
+                                        <span>Wed</span>
+                                        <span>Thu</span>
+                                        <span>Fri</span>
+                                        <span>Sat</span>
+                                        <span>Sun</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Recent Activity Table -->
+                            <div class="rounded-xl bg-surface-dark shadow-sm ring-1 ring-white/5 overflow-hidden">
+                                <div class="border-b border-white/5 px-6 py-4 flex justify-between items-center">
+                                    <h3 class="text-lg font-bold text-white">Recent Activity</h3>
+                                    <button class="text-sm text-primary hover:text-primary/80 font-medium">View
+                                        All</button>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-sm">
+                                        <thead class="bg-white/5 text-slate-400">
+                                            <tr>
+                                                <th class="px-6 py-3 font-medium">Client</th>
+                                                <th class="px-6 py-3 font-medium">Activity</th>
+                                                <th class="px-6 py-3 font-medium">Plan</th>
+                                                <th class="px-6 py-3 font-medium">Time</th>
+                                                <th class="px-6 py-3 font-medium text-right">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-white/5 text-slate-300">
+                                            <tr class="hover:bg-white/5 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <img alt="Client Sarah"
+                                                            class="h-8 w-8 rounded-full object-cover"
+                                                            data-alt="Portrait of a woman"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu8voDOXriEsxqwC2xNtPl4DIXZBnK-RzevYbqr5NNrt-lag1x-_aNd40pMpZyQ0sRm9lU9uOJSyjcr82AT6_d-MWvjri-AP7aEABxH1cRDuOrzJJy0ZSXbsYCWiWqxA2GU0aXvKEC9_tNaPjFHI-875O5_YvZdJ2L8DlS0B95hb8o1z-QphqS1eEaJFB_U2iYL9UBg-Z5UkaO9TyFF0GJ-8tgTH66L-TI4bQHahhGaUfkR6_fGmGf1xn14KDOxVCY22xrqwSngqpg" />
+                                                        <span class="font-medium text-white">Sarah M.</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <span
+                                                        class="inline-flex items-center rounded-full bg-green-500/10 px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-500/20">Check-in
+                                                        Complete</span>
+                                                </td>
+                                                <td class="px-6 py-4">Hypertrophy Block A</td>
+                                                <td class="px-6 py-4 text-slate-500">2 min ago</td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <button class="text-slate-400 hover:text-white"><span
+                                                            class="material-symbols-outlined">visibility</span></button>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-white/5 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <img alt="Client Mike" class="h-8 w-8 rounded-full object-cover"
+                                                            data-alt="Portrait of a man"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzwuEpWXSxuDRfK1YetbenNHW1PG6Ydep0x_XaFTXd8qioZ8YZiVOfxBoqjsyH8YRsAUbc2B3tlvwKBwclwO0wrePq9aaEr9pokJvUhIbaTCVsi6BeDzw6IlGNN_R6h78CosBWqJ2gyo9kJISUWnWVUQtFMveZ18ZwST2cc5ino-YxgYugg65mzgZrfkyXpA00WSCd3iOnttzNQYY6Izxxq9Ywl9jGJoSMWb2DnTvhXfbS5FTwFXwSKrr2Llu8uCOP9Rq0xwtPCx-l" />
+                                                        <span class="font-medium text-white">Mike R.</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <span
+                                                        class="inline-flex items-center rounded-full bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">Workout
+                                                        Logged</span>
+                                                </td>
+                                                <td class="px-6 py-4">Marathon Prep</td>
+                                                <td class="px-6 py-4 text-slate-500">1 hour ago</td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <button class="text-slate-400 hover:text-white"><span
+                                                            class="material-symbols-outlined">visibility</span></button>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-white/5 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <img alt="Client Jessica"
+                                                            class="h-8 w-8 rounded-full object-cover"
+                                                            data-alt="Portrait of a woman smiling"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVmYlSKi5jMzcg7KleT4cpDSeBGQHV3b6QJi3ko7pJZE0v2i7fuREDsr-debPUz5rc916AxJLt38cPWkjpSZK2BBC8LyW6fnhe2uYeEa5ZJYW35aNkOIpK5GD5wDu5memUigUcgtD8l-DUu6WLadHMYXl5GewZmabVGiqmHO49PMQt9EeckUn_m0-bwM4xM3l-AWCSnfjwtF_zPB2HgG0vlTy6HgSCATvEL-PsJf1625O3BbeyQ_-Sg_ouNeLp1AxaraNxolNj8M6C" />
+                                                        <span class="font-medium text-white">Jessica L.</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <span
+                                                        class="inline-flex items-center rounded-full bg-yellow-500/10 px-2 py-1 text-xs font-medium text-yellow-400 ring-1 ring-inset ring-yellow-500/20">Missed
+                                                        Workout</span>
+                                                </td>
+                                                <td class="px-6 py-4">Strength Phase 2</td>
+                                                <td class="px-6 py-4 text-slate-500">3 hours ago</td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <button class="text-slate-400 hover:text-white"><span
+                                                            class="material-symbols-outlined">visibility</span></button>
+                                                </td>
+                                            </tr>
+                                            <tr class="hover:bg-white/5 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <img alt="Client David"
+                                                            class="h-8 w-8 rounded-full object-cover"
+                                                            data-alt="Portrait of a man"
+                                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvpkuZ4vJ_pksxM9d8Zsn5qtLnml1rtwJk26C6XITy2eCChF8bc6Ju2tVoiBZ_l-2sZXcxQelCxeyeQ2BtjY6X-ylpOmo8AYH3d7RdgQ-N3piMo5Fumm5SwkPDLqQ-rO3FsfsUFj1jJWlb7-LJLEBmNHXSdK8ov3Hn-R7AouYOv4h3iQjCEjI5Q6KjkKqhWfiaD09nFlay5omXQi4yCPhrQWA7QjF-yPQA4Ohca_Lp3Pfhaij1pfb3xqlvFx2OK-0X9DPJhhtMljE5" />
+                                                        <span class="font-medium text-white">David K.</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <span
+                                                        class="inline-flex items-center rounded-full bg-green-500/10 px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-500/20">Plan
+                                                        Completed</span>
+                                                </td>
+                                                <td class="px-6 py-4">Weight Loss 101</td>
+                                                <td class="px-6 py-4 text-slate-500">5 hours ago</td>
+                                                <td class="px-6 py-4 text-right">
+                                                    <button class="text-slate-400 hover:text-white"><span
+                                                            class="material-symbols-outlined">visibility</span></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Right Sidebar / Widgets -->
+                        <div class="space-y-6">
+                            <!-- Quick Actions -->
+                            <div class="rounded-xl bg-surface-dark p-6 shadow-sm ring-1 ring-white/5">
+                                <h3 class="text-lg font-bold text-white mb-4">Quick Actions</h3>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button
+                                        class="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/5 p-4 hover:bg-white/10 transition-colors group">
+                                        <span
+                                            class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">person_add</span>
+                                        <span class="text-xs font-medium text-slate-300">Add Client</span>
+                                    </button>
+                                    <button
+                                        class="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/5 p-4 hover:bg-white/10 transition-colors group">
+                                        <span
+                                            class="material-symbols-outlined text-blue-400 group-hover:scale-110 transition-transform">note_add</span>
+                                        <span class="text-xs font-medium text-slate-300">Create Plan</span>
+                                    </button>
+                                    <button
+                                        class="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/5 p-4 hover:bg-white/10 transition-colors group">
+                                        <span
+                                            class="material-symbols-outlined text-orange-400 group-hover:scale-110 transition-transform">mail</span>
+                                        <span class="text-xs font-medium text-slate-300">Message All</span>
+                                    </button>
+                                    <button
+                                        class="flex flex-col items-center justify-center gap-2 rounded-lg bg-white/5 p-4 hover:bg-white/10 transition-colors group">
+                                        <span
+                                            class="material-symbols-outlined text-purple-400 group-hover:scale-110 transition-transform">calendar_add_on</span>
+                                        <span class="text-xs font-medium text-slate-300">Schedule</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Upcoming Schedule -->
+                            <div class="rounded-xl bg-surface-dark p-6 shadow-sm ring-1 ring-white/5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-lg font-bold text-white">Upcoming Sessions</h3>
+                                    <button class="text-slate-400 hover:text-white"><span
+                                            class="material-symbols-outlined">more_horiz</span></button>
+                                </div>
+                                <div class="space-y-4">
+                                    <!-- Event 1 -->
+                                    <div class="flex gap-4 items-start">
+                                        <div
+                                            class="flex flex-col items-center justify-center rounded bg-white/5 p-2 min-w-[50px]">
+                                            <span class="text-xs font-bold text-slate-400">OCT</span>
+                                            <span class="text-lg font-bold text-white">24</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-semibold text-white">PT Session - Zoom</h4>
+                                            <p class="text-xs text-slate-400">with John Doe</p>
+                                            <span class="mt-1 inline-block text-[10px] font-medium text-primary">10:00
+                                                AM - 11:00 AM</span>
+                                        </div>
+                                    </div>
+                                    <!-- Event 2 -->
+                                    <div class="flex gap-4 items-start border-t border-white/5 pt-4">
+                                        <div
+                                            class="flex flex-col items-center justify-center rounded bg-white/5 p-2 min-w-[50px]">
+                                            <span class="text-xs font-bold text-slate-400">OCT</span>
+                                            <span class="text-lg font-bold text-white">24</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-semibold text-white">Initial Consultation</h4>
+                                            <p class="text-xs text-slate-400">with Emma W.</p>
+                                            <span class="mt-1 inline-block text-[10px] font-medium text-primary">02:30
+                                                PM - 03:00 PM</span>
+                                        </div>
+                                    </div>
+                                    <!-- Event 3 -->
+                                    <div class="flex gap-4 items-start border-t border-white/5 pt-4">
+                                        <div
+                                            class="flex flex-col items-center justify-center rounded bg-white/5 p-2 min-w-[50px]">
+                                            <span class="text-xs font-bold text-slate-400">OCT</span>
+                                            <span class="text-lg font-bold text-white">25</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-semibold text-white">Group HIIT Class</h4>
+                                            <p class="text-xs text-slate-400">Main Studio</p>
+                                            <span class="mt-1 inline-block text-[10px] font-medium text-primary">06:00
+                                                PM - 07:00 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="mt-4 w-full rounded-lg border border-white/10 bg-transparent py-2 text-sm font-medium text-white hover:bg-white/5 transition-colors">
+                                    View Calendar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

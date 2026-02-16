@@ -1,0 +1,337 @@
+<!-- Login / Access Page -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>WRKOUT - Login</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#1a3224",
+                        "border-dark": "#244732",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased min-h-screen flex flex-col relative overflow-hidden">
+    <!-- Background Decorative Elements -->
+    <div class="absolute inset-0 z-0 opacity-40 pointer-events-none">
+        <div class="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] rounded-full bg-primary/20 blur-[120px]"></div>
+        <div class="absolute top-[40%] -left-[10%] w-[500px] h-[500px] rounded-full bg-primary/10 blur-[100px]"></div>
+    </div>
+    <!-- Main Content Wrapper -->
+    <div class="relative z-10 flex flex-col grow items-center justify-center p-4 sm:p-8">
+        <!-- Navbar / Top Brand Area -->
+        <header class="absolute top-0 left-0 right-0 flex justify-between items-center p-4 sm:p-6 md:px-12">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="size-8 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl sm:text-3xl">fitness_center</span>
+                </div>
+                <h2 class="text-white text-lg sm:text-xl font-bold tracking-tight">WRKOUT</h2>
+            </div>
+            <a class="hidden sm:flex text-sm text-gray-300 hover:text-white transition-colors gap-1 items-center font-medium"
+                href="#">
+                Need help? <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </a>
+        </header>
+        <!-- Central Login Card -->
+        <div
+            class="w-full max-w-[480px] bg-[#1a2c22]/80 backdrop-blur-xl border border-border-dark shadow-2xl rounded-2xl p-5 sm:p-10 transform transition-all z-10">
+            <!-- Header Section -->
+            <div class="mb-8 text-center">
+                <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white mb-2">Welcome Back</h1>
+                <p class="text-gray-400 text-sm">Please enter your details to sign in.</p>
+            </div>
+            <!-- Role Switcher (Tabs) -->
+            <div class="mb-8">
+                <div aria-label="User Role Selection"
+                    class="flex p-1 bg-surface-dark/50 border border-border-dark rounded-xl" role="group">
+                    <label class="flex-1 relative cursor-pointer group">
+                        <input checked="" class="peer sr-only" name="role" type="radio" value="Client" />
+                        <div
+                            class="flex items-center justify-center py-2.5 px-1 sm:px-3 rounded-lg text-xs sm:text-sm font-medium text-gray-400 transition-all duration-200 peer-checked:bg-background-dark peer-checked:text-white peer-checked:shadow-sm peer-checked:ring-1 peer-checked:ring-primary/20 hover:text-gray-200">
+                            <span
+                                class="material-symbols-outlined text-base sm:text-lg mr-1 sm:mr-1.5 filled">person</span>
+                            Client
+                        </div>
+                    </label>
+                    <label class="flex-1 relative cursor-pointer group">
+                        <input class="peer sr-only" name="role" type="radio" value="Trainer" />
+                        <div
+                            class="flex items-center justify-center py-2.5 px-1 sm:px-3 rounded-lg text-xs sm:text-sm font-medium text-gray-400 transition-all duration-200 peer-checked:bg-background-dark peer-checked:text-white peer-checked:shadow-sm peer-checked:ring-1 peer-checked:ring-primary/20 hover:text-gray-200">
+                            <span class="material-symbols-outlined text-base sm:text-lg mr-1 sm:mr-1.5">exercise</span>
+                            Trainer
+                        </div>
+                    </label>
+                    <label class="flex-1 relative cursor-pointer group">
+                        <input class="peer sr-only" name="role" type="radio" value="Gym" />
+                        <div
+                            class="flex items-center justify-center py-2.5 px-1 sm:px-3 rounded-lg text-xs sm:text-sm font-medium text-gray-400 transition-all duration-200 peer-checked:bg-background-dark peer-checked:text-white peer-checked:shadow-sm peer-checked:ring-1 peer-checked:ring-primary/20 hover:text-gray-200">
+                            <span class="material-symbols-outlined text-base sm:text-lg mr-1 sm:mr-1.5">apartment</span>
+                            Gym
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <!-- Login Form -->
+            <form id="loginForm" class="space-y-5">
+                <!-- Email Field -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 pl-1"
+                        for="email">Email Address</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span
+                                class="material-symbols-outlined text-gray-500 group-focus-within:text-primary transition-colors">mail</span>
+                        </div>
+                        <input
+                            class="block w-full pl-11 pr-4 py-3.5 bg-surface-dark border border-border-dark rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all sm:text-sm"
+                            id="email" name="email" placeholder="name@company.com" required="" type="email" />
+                    </div>
+                </div>
+                <!-- Password Field -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center pl-1">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400"
+                            for="password">Password</label>
+                        <a class="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                            href="javascript:void(0)" onclick="openResetModal()">Forgot password?</a>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span
+                                class="material-symbols-outlined text-gray-500 group-focus-within:text-primary transition-colors">lock</span>
+                        </div>
+                        <input
+                            class="block w-full pl-11 pr-12 py-3.5 bg-surface-dark border border-border-dark rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all sm:text-sm"
+                            id="password" name="password" placeholder="••••••••••••" required="" type="password" />
+                        <button
+                            class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors focus:outline-none"
+                            type="button" onclick="togglePassword()">
+                            <span class="material-symbols-outlined text-lg" id="eyeIcon">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="errorMessage"
+                    class="hidden p-3 rounded-lg bg-red-400/10 border border-red-500/20 text-red-400 text-sm text-center">
+                </div>
+
+                <!-- Submit Button -->
+                <button id="submitBtn"
+                    class="w-full flex items-center justify-center py-3.5 px-4 rounded-xl text-sm font-bold text-background-dark bg-primary hover:bg-[#15c55b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-primary transition-all shadow-[0_0_20px_rgba(25,230,107,0.3)] hover:shadow-[0_0_25px_rgba(25,230,107,0.4)] mt-6"
+                    type="submit">
+                    Sign in to Account
+                    <span class="material-symbols-outlined ml-2 text-lg">login</span>
+                </button>
+            </form>
+            <!-- Footer -->
+            <div class="mt-8 text-center border-t border-white/5 pt-6">
+                <p class="text-sm text-gray-400">
+                    Don't have an account?
+                    <a class="font-bold text-primary hover:text-primary/80 transition-colors" href="register.html">Sign
+                        up free</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Forgot Password Modal -->
+        <div id="forgotPasswordModal"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+            <div
+                class="bg-[#1a2c22] border border-border-dark p-8 rounded-2xl shadow-2xl w-full max-w-md transform scale-95 transition-transform duration-300">
+                <div class="text-center mb-6">
+                    <span class="material-symbols-outlined text-4xl text-primary mb-2">lock_reset</span>
+                    <h3 class="text-xl font-bold text-white">Reset Password</h3>
+                    <p class="text-gray-400 text-sm mt-1">Enter your email to receive reset instructions.</p>
+                </div>
+                <form id="resetForm" class="space-y-4">
+                    <input
+                        class="block w-full px-4 py-3 bg-surface-dark border border-border-dark rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        id="resetEmail" type="email" placeholder="name@company.com" required />
+                    <div id="resetMessage" class="hidden text-sm text-center"></div>
+                    <div class="flex gap-3 mt-6">
+                        <button type="button" onclick="closeResetModal()"
+                            class="flex-1 py-2.5 rounded-xl border border-border-dark text-gray-300 hover:bg-white/5 transition-colors font-medium">Cancel</button>
+                        <button type="submit"
+                            class="flex-1 py-2.5 rounded-xl bg-primary text-background-dark font-bold hover:bg-[#15c55b] transition-colors">Send
+                            Link</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Decorative Info Cards (Subtle - only visible on larger screens to fill space) -->
+        <div class="hidden lg:block absolute bottom-12 right-12 animate-fade-in-up delay-100">
+            <div
+                class="flex items-center gap-4 bg-surface-dark/40 backdrop-blur-md border border-border-dark p-4 rounded-xl max-w-xs">
+                <div class="size-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                    <span class="material-symbols-outlined">security</span>
+                </div>
+                <div>
+                    <h4 class="text-white text-sm font-semibold">Secure Access</h4>
+                    <p class="text-xs text-gray-400">Enterprise-grade encryption.</p>
+                </div>
+            </div>
+        </div>
+        <div class="hidden lg:block absolute bottom-12 left-12 animate-fade-in-up delay-200">
+            <div
+                class="flex items-center gap-4 bg-surface-dark/40 backdrop-blur-md border border-border-dark p-4 rounded-xl max-w-xs">
+                <div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined">bolt</span>
+                </div>
+                <div>
+                    <h4 class="text-white text-sm font-semibold">High Performance</h4>
+                    <p class="text-xs text-gray-400">Real-time data synchronization.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Supabase Logic -->
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Password Toggle
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.textContent = 'visibility';
+            }
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('forgotPasswordModal');
+        const modalContent = modal.querySelector('div');
+
+        function openResetModal() {
+            modal.classList.remove('hidden');
+            // Small delay to allow display flow to update before adding opacity class for transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+            document.getElementById('resetEmail').value = document.getElementById('email').value; // pre-fill if user typed something
+        }
+
+        function closeResetModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('resetMessage').classList.add('hidden');
+            }, 300);
+        }
+
+        // Wire up the 'Forgot password?' link
+        // Note: We need to change the href="#" to a javascript call in the HTML properly or attach event listener here.
+        // Since we are replacing content, I will attach it via event listener to be clean, 
+        // OR better yet, since I am replacing the HTML, I should update the link HTML directly to javascript:void(0) and onclick.
+
+        document.getElementById('resetForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const email = document.getElementById('resetEmail').value;
+            const msgDiv = document.getElementById('resetMessage');
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            const result = await auth.resetPassword(email);
+
+            msgDiv.classList.remove('hidden', 'text-red-400', 'text-primary');
+            if (result.success) {
+                msgDiv.textContent = 'Check your email for the reset link!';
+                msgDiv.classList.add('text-primary');
+                setTimeout(closeResetModal, 3000);
+            } else {
+                let msg = result.message;
+                if (msg.includes('rate limit')) {
+                    msg = "Troppi tentativi. Attendi 60 secondi prima di riprovare.";
+                } else if (msg.includes('msg') || msg.toLowerCase().includes('error')) {
+                    // Fallback generic translation if needed, or keep original if clear
+                }
+                msgDiv.textContent = msg;
+                msgDiv.classList.add('text-red-400');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Send Link';
+        });
+
+        // Login Logic
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.getElementById('submitBtn');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorMessage.classList.add('hidden');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing In...';
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Get selected role from the radio buttons (tabs)
+            const selectedRoleElement = document.querySelector('input[name="role"]:checked');
+            // If no radio is checked (shouldn't happen due to 'checked' attr), default to first or handle error
+            const selectedRole = selectedRoleElement ? selectedRoleElement.value.toLowerCase() : 'client';
+
+            // Pass selectedRole to auth.login for strict verification
+            const result = await auth.login(email, password, selectedRole);
+
+            if (result.success) {
+                const role = result.role; // This is the verified role from DB
+
+                // Strict Redirection
+                if (role === 'trainer') {
+                    window.location.href = 'trainer-dashboard.html';
+                } else if (role === 'gym') {
+                    window.location.href = 'gym-dashboard.html';
+                } else {
+                    window.location.href = 'index.html'; // Client
+                }
+            } else {
+                errorMessage.textContent = result.message;
+                errorMessage.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Sign in to Account <span class="material-symbols-outlined ml-2 text-lg">login</span>';
+            }
+        });
+    </script>
+</body>
+
+</html>

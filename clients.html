@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients - WRKOUT</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "primary-content": "#003816",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#FFFFFF",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #112117;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #244732;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2f5e42;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-hidden">
+
+    <div class="flex h-screen w-full overflow-hidden">
+
+        <!-- Side Navigation -->
+        <aside class="hidden w-64 flex-col bg-[#112218] border-r border-[#244732] lg:flex flex-shrink-0">
+            <div class="flex h-full flex-col justify-between p-4">
+                <div class="flex flex-col gap-6">
+                    <!-- User Profile -->
+                    <div class="flex gap-3 items-center pb-4 border-b border-[#244732]">
+                        <div class="size-12 rounded-full bg-cover bg-center bg-no-repeat shadow-lg ring-2 ring-[#19e66b]/20"
+                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqUCg2DxGuHY5XkTixD0Cg3PIjFkGc00grrWscZOpiNms0WJEr7jlG6QkG848X3g9E53T38AA0GubFdIzsL-lYRolCJLgPG5d9NEWiSlo9LneO4ZZTjL_wzGVe3sdzehmxcMAd94kMFhVFA7j68CD7G0LqtRso5bwql_v4h91v9YVO-y1fnpOgIyLGrjhU16IuLMKqNG7KkxP_gPQymuu8-7re-h-5tajucPsLMrUosL6CoN2UyHV2VOlx2lHc8U3FwaUU-bc9kNti');"
+                            role="img" aria-label="Profile picture of a fitness trainer">
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-white text-base font-medium leading-normal">WRKOUT</h1>
+                            <p class="text-[#93c8a8] text-xs font-medium uppercase tracking-wider">Pro Trainer</p>
+                        </div>
+                    </div>
+
+                    <!-- Nav Links -->
+                    <nav class="flex flex-col gap-2">
+                        <a href="trainer-dashboard.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                            <span
+                                class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">dashboard</span>
+                            <span class="text-sm font-medium">Dashboard</span>
+                        </a>
+
+                        <!-- Active State -->
+                        <div class="flex flex-col gap-1">
+                            <div class="px-3 text-xs font-semibold text-[#93c8a8] uppercase tracking-wider mt-4 mb-2">My
+                                Business</div>
+                            <a href="#"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#19e66b]/10 text-[#19e66b] ring-1 ring-[#19e66b]/20">
+                                <span class="material-symbols-outlined fill-current">group</span>
+                                <span class="text-sm font-bold">Clients</span>
+                            </a>
+                            <a href="workout-builder.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                                <span
+                                    class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">fitness_center</span>
+                                <span class="text-sm font-medium">Workouts</span>
+                            </a>
+                            <a href="analytics.html"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                                <span
+                                    class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">monitoring</span>
+                                <span class="text-sm font-medium">Analytics</span>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Bottom Links -->
+                <div class="flex flex-col gap-2 pt-4 border-t border-[#244732]">
+                    <a href="settings.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                        <span class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">settings</span>
+                        <span class="text-sm font-medium">Settings</span>
+                    </a>
+                    <a href="login.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-900/20 transition-colors group">
+                        <span class="material-symbols-outlined group-hover:text-red-300">logout</span>
+                        <span class="text-sm font-medium">Log Out</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+            <!-- Header -->
+            <header
+                class="h-16 border-b border-[#244732] bg-[#112117]/80 backdrop-blur-md flex items-center justify-between px-6 z-10">
+                <div class="flex items-center gap-4">
+                    <button class="lg:hidden p-2 text-white hover:bg-[#244732] rounded-lg">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg font-bold text-white tracking-tight">Clients</h2>
+                        <p class="text-xs text-[#93c8a8]">Manage your athletes and their progress</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button
+                        class="flex items-center justify-center size-9 rounded-full bg-[#1A2E22] border border-[#244732] text-white hover:bg-[#244732] transition-colors">
+                        <span class="material-symbols-outlined text-[20px]">notifications</span>
+                    </button>
+                    <button
+                        class="flex items-center justify-center gap-2 h-9 px-4 rounded-lg bg-[#19e66b] text-[#112117] text-sm font-bold hover:bg-[#15c55b] transition-colors shadow-lg shadow-[#19e66b]/20">
+                        <span class="material-symbols-outlined text-[18px]">person_add</span>
+                        <span>Add Client</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto p-6 scroll-smooth">
+                <div class="max-w-[1400px] mx-auto flex flex-col gap-6">
+
+                    <!-- Filter Bar -->
+                    <div
+                        class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-[#1A2E22] p-2 rounded-xl border border-[#244732]">
+                        <div class="w-full sm:w-auto flex-1 flex items-center gap-2 px-3">
+                            <span class="material-symbols-outlined text-[#93c8a8]">search</span>
+                            <input type="text" placeholder="Search clients..."
+                                class="bg-transparent border-none text-white placeholder-[#5d8b70] focus:ring-0 w-full text-sm">
+                        </div>
+
+                        <div class="flex items-center gap-2 w-full sm:w-auto p-1">
+                            <select
+                                class="bg-[#112117] text-[#93c8a8] text-xs font-medium border border-[#244732] rounded-lg px-3 py-2 hover:border-[#19e66b]/50 focus:ring-1 focus:ring-[#19e66b] transition-colors">
+                                <option>All Status</option>
+                                <option>Active</option>
+                                <option>Pending</option>
+                                <option>Archived</option>
+                            </select>
+                            <select
+                                class="bg-[#112117] text-[#93c8a8] text-xs font-medium border border-[#244732] rounded-lg px-3 py-2 hover:border-[#19e66b]/50 focus:ring-1 focus:ring-[#19e66b] transition-colors">
+                                <option>Sort by: Recent</option>
+                                <option>Name A-Z</option>
+                                <option>Progress High-Low</option>
+                                <option>Progress Low-High</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Client Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+                        <!-- Client Card 1 (Active) -->
+                        <div
+                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:translate-y-[-2px] hover:border-[#19e66b]/30 transition-all duration-300 group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-[#19e66b]"
+                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuM0jBvF_w0X_C-e4f_zVeX-w9OswN7sXW5jKq5m7H_0f9k_A8_V7l3m0o2p_R7q6d-4Wn1t8y9u0i2o3p4a5s6d7f8g9h0j1k2l3m4n5o6p7q8r9s0=s120-c');">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-sm">Michael Foster</h3>
+                                        <span class="text-[#93c8a8] text-xs">Since Jan 2026</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="bg-[#19e66b]/10 text-[#19e66b] text-[10px] font-bold px-2 py-1 rounded-full border border-[#19e66b]/20">ACTIVE</span>
+                            </div>
+
+                            <div class="space-y-3 mb-5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Current Plan</span>
+                                    <span class="text-white font-medium">Hypertrophy Phase 2</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Last Workout</span>
+                                    <span class="text-white font-medium">Yesterday</span>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-[#93c8a8]">Adherence</span>
+                                        <span class="text-[#19e66b] font-bold">92%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
+                                        <div class="h-full bg-[#19e66b] rounded-full" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button
+                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
+                                <button
+                                    class="flex-1 bg-[#19e66b] text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-[#15c55b] transition-colors">Message</button>
+                            </div>
+                        </div>
+
+                        <!-- Client Card 2 (Needs Attention) -->
+                        <div
+                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:translate-y-[-2px] hover:border-red-400/30 transition-all duration-300 group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-red-400"
+                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuN9kL3p_J0M1O2P3Q4R5S6T7U8V9W0X1Y2Z3A4B5C6D7E8F9G0H1I2J3K4L5M6N7O8P9Q0R1S2T3U4V5W6X7Y8Z9a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4=s120-c');">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-sm">Emma Wilson</h3>
+                                        <span class="text-[#93c8a8] text-xs">Since Feb 2026</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="bg-red-400/10 text-red-400 text-[10px] font-bold px-2 py-1 rounded-full border border-red-400/20">AT
+                                    RISK</span>
+                            </div>
+
+                            <div class="space-y-3 mb-5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Current Plan</span>
+                                    <span class="text-white font-medium">Strength Basics</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Last Workout</span>
+                                    <span class="text-red-400 font-medium">5 days ago</span>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-[#93c8a8]">Adherence</span>
+                                        <span class="text-red-400 font-bold">45%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
+                                        <div class="h-full bg-red-400 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button
+                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
+                                <button
+                                    class="flex-1 bg-red-400 text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-red-500 transition-colors">Nudge</button>
+                            </div>
+                        </div>
+
+                        <!-- Client Card 3 (New) -->
+                        <div
+                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:translate-y-[-2px] hover:border-blue-400/30 transition-all duration-300 group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-blue-400"
+                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuP5qR2s_T4U6V7W8X9Y0Z1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V3W4X5Y6Z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p3q4r5s6t7=s120-c');">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-sm">James Miller</h3>
+                                        <span class="text-[#93c8a8] text-xs">Joined Today</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="bg-blue-400/10 text-blue-400 text-[10px] font-bold px-2 py-1 rounded-full border border-blue-400/20">NEW</span>
+                            </div>
+
+                            <div class="space-y-3 mb-5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Current Plan</span>
+                                    <span class="text-white font-medium text-opacity-50 italic">None Assigned</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Last Workout</span>
+                                    <span class="text-white font-medium">--</span>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-[#93c8a8]">Onboarding</span>
+                                        <span class="text-blue-400 font-bold">In Progress</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-400 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button
+                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
+                                <button
+                                    class="flex-1 bg-blue-400 text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-blue-500 transition-colors">Assign
+                                    Plan</button>
+                            </div>
+                        </div>
+
+                        <!-- Client Card 4 (Active) -->
+                        <div
+                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:border-[#19e66b]/30 transition-colors group">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-[#19e66b]"
+                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuQ8rT5u_V7W9X0Y1Z2A3B4C5D6E7F8G9H0I1J2K3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8=s120-c');">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-white font-bold text-sm">Olivia Chen</h3>
+                                        <span class="text-[#93c8a8] text-xs">Since Dec 2025</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="bg-[#19e66b]/10 text-[#19e66b] text-[10px] font-bold px-2 py-1 rounded-full border border-[#19e66b]/20">ACTIVE</span>
+                            </div>
+
+                            <div class="space-y-3 mb-5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Current Plan</span>
+                                    <span class="text-white font-medium">Endurance Pro</span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-[#93c8a8]">Last Workout</span>
+                                    <span class="text-white font-medium">2 days ago</span>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <div class="flex justify-between items-center text-xs">
+                                        <span class="text-[#93c8a8]">Adherence</span>
+                                        <span class="text-[#19e66b] font-bold">88%</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
+                                        <div class="h-full bg-[#19e66b] rounded-full" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button
+                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
+                                <button
+                                    class="flex-1 bg-[#19e66b] text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-[#15c55b] transition-colors">Message</button>
+                            </div>
+                        </div>
+
+                        <!-- Add New Placeholder -->
+                        <button
+                            class="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-[#244732] rounded-xl p-5 hover:border-[#19e66b]/50 hover:bg-[#244732]/20 transition-all duration-300 group h-full min-h-[220px]">
+                            <div
+                                class="size-12 rounded-full bg-[#244732] flex items-center justify-center group-hover:bg-[#19e66b] transition-colors">
+                                <span
+                                    class="material-symbols-outlined text-[#93c8a8] group-hover:text-[#112117]">add</span>
+                            </div>
+                            <span class="text-[#93c8a8] text-sm font-medium group-hover:text-white">Add New
+                                Client</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        // No JS logic here as per instructions, just purely layout
+    </script>
+</body>
+
+</html>

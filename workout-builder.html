@@ -1,0 +1,480 @@
+<!-- Workout Plan Builder -->
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Workout Plan Builder - WRKOUT</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#18181b",
+                        "surface-darker": "#0f0f10",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for better aesthetics in dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #112117;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334139;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4B5563;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden h-screen flex">
+    <!-- Main Side Navigation (From provided component) -->
+    <div class="relative hidden md:flex h-full w-72 flex-col bg-[#112218] border-r border-[#244732] shrink-0">
+        <div class="flex h-full flex-col justify-between p-4">
+            <div class="flex flex-col gap-6">
+                <!-- User Profile / Brand -->
+                <div class="flex gap-3 items-center">
+                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 bg-slate-700"
+                        data-alt="Profile picture of a fitness trainer"
+                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBBcPmXDAmIeu47GGg_Z9zInkg6Bi2uUO_YGJuqkF5pmSxw6HYxuJCRA12X3YZp6W3czB--AJun2jxLCxQ-OV2xOyRqO0i6KdBK8MYfmaBWDmPVvdp3ShJ1yjRujuESjAdNdnajtL8qc0NbpQqgOaGC-2zT5nYsPdU1KjufT0WjHmGtS8pPCr_UIQQYzzNNO3tKd2SVnHj6_FsUfYW77mWd_HWvb8JWZxDONpBXOBhtWZV7RzxAVpbeZb_pYDslD5Ce1NAayKPGZ3YJ");'>
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-white text-base font-medium leading-normal">WRKOUT</h1>
+                        <p class="text-[#93c8a8] text-sm font-normal leading-normal">Trainer Admin</p>
+                    </div>
+                </div>
+                <!-- Nav Links -->
+                <div class="flex flex-col gap-1">
+                    <a href="trainer-dashboard.html"
+                        class="flex items-center gap-3 px-3 py-2 text-[#93c8a8] hover:text-white hover:bg-[#244732] rounded-lg transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">grid_view</span>
+                        <p class="text-sm font-medium leading-normal">Dashboard</p>
+                    </a>
+                    <a href="clients.html"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#244732] text-white cursor-pointer">
+                        <span class="material-symbols-outlined text-primary">group</span>
+                        <p class="text-sm font-medium leading-normal">Clients</p>
+                    </a>
+                    <div
+                        class="flex items-center gap-3 px-3 py-2 text-[#93c8a8] hover:text-white hover:bg-[#244732] rounded-lg transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">fitness_center</span>
+                        <p class="text-sm font-medium leading-normal">Exercises</p>
+                    </div>
+                    <div
+                        class="flex items-center gap-3 px-3 py-2 text-[#93c8a8] hover:text-white hover:bg-[#244732] rounded-lg transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">description</span>
+                        <p class="text-sm font-medium leading-normal">Templates</p>
+                    </div>
+                    <a href="settings.html"
+                        class="flex items-center gap-3 px-3 py-2 text-[#93c8a8] hover:text-white hover:bg-[#244732] rounded-lg transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">settings</span>
+                        <p class="text-sm font-medium leading-normal">Settings</p>
+                    </a>
+                </div>
+            </div>
+            <!-- Bottom Action -->
+            <div class="pt-4 border-t border-[#244732]">
+                <a href="login.html"
+                    class="flex items-center gap-3 px-3 py-2 text-[#93c8a8] hover:text-white hover:bg-[#244732] rounded-lg transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined">logout</span>
+                    <p class="text-sm font-medium leading-normal">Logout</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Secondary Sidebar: Exercise Library -->
+    <div class="w-80 bg-surface-dark border-r border-[#244732] flex flex-col shrink-0 h-full">
+        <div class="p-4 border-b border-[#244732]">
+            <h2 class="text-white font-semibold mb-3">Exercise Library</h2>
+            <!-- Search -->
+            <div class="relative">
+                <span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[20px]">search</span>
+                <input
+                    class="w-full bg-[#244732]/50 border border-[#244732] text-white text-sm rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder-gray-500"
+                    placeholder="Search exercises..." type="text" />
+            </div>
+            <!-- Filter Chips -->
+            <div class="flex gap-2 mt-3 overflow-x-auto pb-1 no-scrollbar">
+                <button
+                    class="px-3 py-1 bg-primary/20 text-primary text-xs font-medium rounded-full whitespace-nowrap border border-primary/30">All</button>
+                <button
+                    class="px-3 py-1 bg-[#244732] text-gray-300 text-xs font-medium rounded-full whitespace-nowrap hover:bg-[#2f5c40]">Chest</button>
+                <button
+                    class="px-3 py-1 bg-[#244732] text-gray-300 text-xs font-medium rounded-full whitespace-nowrap hover:bg-[#2f5c40]">Back</button>
+                <button
+                    class="px-3 py-1 bg-[#244732] text-gray-300 text-xs font-medium rounded-full whitespace-nowrap hover:bg-[#2f5c40]">Legs</button>
+            </div>
+        </div>
+        <!-- Draggable Exercise List -->
+        <div class="flex-1 overflow-y-auto p-3 space-y-2">
+            <!-- Item 1 -->
+            <div
+                class="group flex items-center gap-3 p-2 rounded-lg hover:bg-[#244732] cursor-grab active:cursor-grabbing border border-transparent hover:border-primary/20 transition-all">
+                <div class="w-10 h-10 rounded bg-gray-700 bg-cover bg-center shrink-0" data-alt="Man doing bench press"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBx-QzjmLGx7sqHh9GztfVSSCij52gPptGHwMjMdePJ1HvPe3P9rov3dcGdHQSqusHyiRAcghK91p_Wl61Ch3MUFcROVBK8C1hck3jzqCITN8jRZSLwozyzRCmtNCdJTjdpH9_ObqEDbE0BjiKs0-mHOL-SrIplrLA938ActKgJqX1VM-2q9PK_4J67PJEsRHIBEMO6Sj3dLZOsMD7HTWgHFYbILhsmOc1Y7O9mW7rzoDY1MUnL-YELnnnjUnIcHrpafCWw1mI3QvTl')">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-medium text-white truncate">Barbell Bench Press</h3>
+                    <p class="text-xs text-gray-400 truncate">Chest • Compound</p>
+                </div>
+                <button
+                    class="w-6 h-6 rounded-full bg-primary text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+            </div>
+            <!-- Item 2 -->
+            <div
+                class="group flex items-center gap-3 p-2 rounded-lg hover:bg-[#244732] cursor-grab active:cursor-grabbing border border-transparent hover:border-primary/20 transition-all">
+                <div class="w-10 h-10 rounded bg-gray-700 bg-cover bg-center shrink-0" data-alt="Woman doing squats"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCjDMoxAgsaE8WRniybKHeIO7ux-3JAcJQFkzS1du9fD4G4mVYasjPSuB4JkSCxvjwJWB3fw9L24cAE7dxwkyeS9FSQZJOLHpgOGxYK-UtRanhu1N6VgcaY_bzS5fvRxBJ87AaPlWXT-DUgqfBUhQhLlhX2Xp20hY2Oj93WLDndeWlSZ480MvyZRUPl7jkI9tFJGGuL2goKI9Uzj_CCCM02jVifDs382WGIEWQcPSl9_eXzt9R3_Ms_llTUOUOVYSPZi0fobCFI-nGR')">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-medium text-white truncate">Barbell Squat</h3>
+                    <p class="text-xs text-gray-400 truncate">Legs • Compound</p>
+                </div>
+                <button
+                    class="w-6 h-6 rounded-full bg-primary text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+            </div>
+            <!-- Item 3 -->
+            <div
+                class="group flex items-center gap-3 p-2 rounded-lg hover:bg-[#244732] cursor-grab active:cursor-grabbing border border-transparent hover:border-primary/20 transition-all">
+                <div class="w-10 h-10 rounded bg-gray-700 bg-cover bg-center shrink-0" data-alt="Man doing pullups"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgO12omJAkiw-AnLBrhPY6_HvFUSCqCGDrf7H7jV8r1xV4e_981_gXhos0J1uPeAeo3jf2sitS_cyVYn1ikUn_8erwXuGWiB3Zz7qdx2wrGZB_DbbGabdreW-xAP952rcdYfavk7jLhXNODRscNXhODox3mn5b637ngcutuJnZMDu86UD3_7Lk9Jk91zy5B_5Mc18uOLp_vG51JAAUsmr8Qk-n2KLFk7ANiLP4xSher0EmxH3apLyitm-COoaj5V9k1TgmBoMQ51DL')">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-medium text-white truncate">Pull Up (Weighted)</h3>
+                    <p class="text-xs text-gray-400 truncate">Back • Compound</p>
+                </div>
+                <button
+                    class="w-6 h-6 rounded-full bg-primary text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+            </div>
+            <!-- Item 4 -->
+            <div
+                class="group flex items-center gap-3 p-2 rounded-lg hover:bg-[#244732] cursor-grab active:cursor-grabbing border border-transparent hover:border-primary/20 transition-all">
+                <div class="w-10 h-10 rounded bg-gray-700 bg-cover bg-center shrink-0"
+                    data-alt="Dumbbell shoulder press"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhykf_qin6AEPlw3c7ISNalnJQQBhd8iHmG5VLgYLxRRooNMdMONOqaWGNgtxXP8O_Lx3S4lUUvDivHXETrSkAk6XGQjbm71cskufJqcdDfqRB5fvt76QhiR5h68s2HAR02wNKtU5z9y3CHSE9UFL5EwRYensaCdL5lBV2jEsxwbiaI60EgJ84j4gSFrVFI-IxFCTKomhE1VZU2GsAz27ljx7axUJP1un7mGSjA0TOFzwx5s_iLgRtqHQRQ7L5Oz_xyWWshZ1hRsoz')">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-medium text-white truncate">DB Shoulder Press</h3>
+                    <p class="text-xs text-gray-400 truncate">Shoulders • Compound</p>
+                </div>
+                <button
+                    class="w-6 h-6 rounded-full bg-primary text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+            </div>
+            <!-- Item 5 -->
+            <div
+                class="group flex items-center gap-3 p-2 rounded-lg hover:bg-[#244732] cursor-grab active:cursor-grabbing border border-transparent hover:border-primary/20 transition-all">
+                <div class="w-10 h-10 rounded bg-gray-700 bg-cover bg-center shrink-0" data-alt="Tricep pushdowns"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlghLRWw0JqLA5gnE2F-kbJ15cd-M94SaLABat-8WCaiiOJDUyCjDD-rZpc5-KGXuDN_vqPodnL_Ro0TBkAlWsEpYxr5ivEXnMFFZTumz-px3nGeMlpe41OGd5r5zw8ZRtPSxmfQyHKkeutkEhST5lJBt0BlrmQFWK47gjs2qmsojFs0ZfPVJo0rcvqvD0bueU2wgdLn25Wv0W7jJ9R0dHf5TB0Yz2X-vKrcsSJax8DxJF5D08pTKNzXHj4v_50Gbx7_ei7vXbyRTz')">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-sm font-medium text-white truncate">Tricep Rope Pushdown</h3>
+                    <p class="text-xs text-gray-400 truncate">Triceps • Isolation</p>
+                </div>
+                <button
+                    class="w-6 h-6 rounded-full bg-primary text-black flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Main Builder Canvas -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+        <!-- Top Bar -->
+        <header class="h-16 border-b border-[#244732] flex items-center justify-between px-6 bg-surface-dark shrink-0">
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2 text-xs text-gray-400 mb-0.5">
+                    <a href="clients.html" class="hover:text-primary cursor-pointer">Clients</a>
+                    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                    <span class="hover:text-primary cursor-pointer">John Doe</span>
+                    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                    <span class="text-white">New Plan</span>
+                </div>
+                <h1 class="text-lg font-bold text-white tracking-tight">Hypertrophy Phase 1 - Push A</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <button
+                    class="px-4 py-2 rounded-lg border border-[#244732] text-sm font-medium text-gray-300 hover:bg-[#244732] hover:text-white transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">save</span>
+                    Save Draft
+                </button>
+                <button
+                    class="px-4 py-2 rounded-lg bg-primary text-background-dark text-sm font-bold hover:bg-[#15c25a] transition-colors shadow-[0_0_15px_rgba(25,230,107,0.3)] flex items-center gap-2">
+                    <span>Assign to Client</span>
+                    <span class="material-symbols-outlined text-[18px]">send</span>
+                </button>
+            </div>
+        </header>
+        <!-- Builder Scroll Area -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-8">
+            <div class="max-w-4xl mx-auto flex flex-col gap-6">
+                <!-- Plan Metadata Card -->
+                <div class="bg-surface-dark border border-[#244732] rounded-xl p-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Plan Name</label>
+                            <input
+                                class="w-full bg-[#112218] border border-[#244732] rounded-lg px-3 py-2 text-white text-sm focus:ring-1 focus:ring-primary focus:border-primary"
+                                type="text" value="Hypertrophy Phase 1 - Push A" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1.5">Description / Goal</label>
+                            <input
+                                class="w-full bg-[#112218] border border-[#244732] rounded-lg px-3 py-2 text-white text-sm focus:ring-1 focus:ring-primary focus:border-primary"
+                                type="text" value="Focus on chest and front delts. Keep intensity high." />
+                        </div>
+                    </div>
+                </div>
+                <!-- Exercise List Container -->
+                <div class="flex flex-col gap-4" id="workout-list">
+                    <!-- Exercise Card 1 -->
+                    <div
+                        class="group bg-surface-dark border border-[#244732] rounded-xl p-4 hover:border-primary/50 transition-colors shadow-sm relative">
+                        <div
+                            class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                            <!-- Drag Handle -->
+                            <div class="hidden md:flex cursor-grab text-gray-600 hover:text-gray-400 p-1">
+                                <span class="material-symbols-outlined">drag_indicator</span>
+                            </div>
+                            <!-- Exercise Info -->
+                            <div class="flex items-center gap-3 min-w-[200px]">
+                                <div class="w-12 h-12 rounded bg-gray-800 bg-cover bg-center shrink-0"
+                                    data-alt="Barbell Bench Press"
+                                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCU5eXNqnpOi1wJXOSXA4P5srBTNo0hhpcyjjvLbjPepM5AAyJaL5gTgOXGp3resgir0_SV3HIBed6SUXbHoKOtQxxogqU0XIiWV_A1MnOv67TEZmYf1zG0YPTtehvNyNqkONlJQxCOWOEnD_K1B_VdFdECr5FnWmrlpEnDOQZVWgUjhWqoIh41oqoCCGvfSLQsxSR4Zsesx0pYYH9Uu7v2314K54rGI-jecFn9Gw8vLNUwzah2WNfkjzsZMEZ79z_RCbMC6xByXSvx')">
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold text-sm">Barbell Bench Press</h3>
+                                    <span
+                                        class="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Chest</span>
+                                </div>
+                            </div>
+                            <!-- Inputs Grid -->
+                            <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
+                                <div>
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Sets</label>
+                                    <input
+                                        class="w-full bg-[#112218] border border-[#244732] rounded px-2 py-1.5 text-white text-sm text-center focus:ring-1 focus:ring-primary focus:border-primary tabular-nums"
+                                        type="number" value="4" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Reps</label>
+                                    <input
+                                        class="w-full bg-[#112218] border border-[#244732] rounded px-2 py-1.5 text-white text-sm text-center focus:ring-1 focus:ring-primary focus:border-primary tabular-nums"
+                                        type="text" value="8-10" />
+                                </div>
+                                <div class="relative">
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Weight</label>
+                                    <input
+                                        class="w-full bg-[#112218] border border-[#244732] rounded px-2 py-1.5 text-white text-sm text-center focus:ring-1 focus:ring-primary focus:border-primary tabular-nums pr-6"
+                                        type="number" value="80" />
+                                    <span
+                                        class="absolute right-2 bottom-1.5 text-xs text-gray-500 pointer-events-none">kg</span>
+                                </div>
+                                <div class="relative">
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Rest</label>
+                                    <div
+                                        class="flex items-center bg-[#112218] border border-[#244732] rounded px-2 py-1.5 focus-within:ring-1 focus-within:ring-primary focus-within:border-primary">
+                                        <span
+                                            class="material-symbols-outlined text-gray-500 text-[14px] mr-1">timer</span>
+                                        <input
+                                            class="w-full bg-transparent border-none p-0 text-white text-sm text-center focus:ring-0"
+                                            type="text" value="90s" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Actions -->
+                            <div
+                                class="flex items-center gap-1 md:ml-4 border-l border-[#244732] pl-4 md:border-l-0 md:pl-0 pt-2 md:pt-0 border-t md:border-t-0 mt-2 md:mt-0 w-full md:w-auto justify-end">
+                                <button
+                                    class="p-1.5 text-gray-500 hover:text-white hover:bg-[#244732] rounded transition-colors tooltip"
+                                    title="Add Note">
+                                    <span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
+                                </button>
+                                <button
+                                    class="p-1.5 text-gray-500 hover:text-white hover:bg-[#244732] rounded transition-colors"
+                                    title="Duplicate">
+                                    <span class="material-symbols-outlined text-[20px]">content_copy</span>
+                                </button>
+                                <button
+                                    class="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors"
+                                    title="Remove">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Notes Area (Hidden by default, shown here for example) -->
+                        <div class="mt-3 pt-3 border-t border-[#244732]/50 flex gap-2">
+                            <span
+                                class="material-symbols-outlined text-yellow-500/80 text-[18px] mt-0.5">sticky_note_2</span>
+                            <textarea
+                                class="w-full bg-transparent border-none p-0 text-gray-400 text-sm focus:ring-0 resize-none h-auto"
+                                placeholder="Add instructions for client..."
+                                rows="1">Ensure full range of motion. Touch chest to bar.</textarea>
+                        </div>
+                    </div>
+                    <!-- Exercise Card 2 -->
+                    <div
+                        class="group bg-surface-dark border border-[#244732] rounded-xl p-4 hover:border-primary/50 transition-colors shadow-sm relative">
+                        <div
+                            class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary rounded-l-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                            <div class="hidden md:flex cursor-grab text-gray-600 hover:text-gray-400 p-1">
+                                <span class="material-symbols-outlined">drag_indicator</span>
+                            </div>
+                            <div class="flex items-center gap-3 min-w-[200px]">
+                                <div class="w-12 h-12 rounded bg-gray-800 bg-cover bg-center shrink-0"
+                                    data-alt="Dumbbell Shoulder Press"
+                                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDcbEZgpgrTVDbQQ4FGQJCMze7nt7iA4EUfTeZgvmz-beyP18x5kJ3Xix6d29QCsjn-rOzFnxCCLUX33fLsADdUJnG6bcmflBstfANBy__YnKWW2v9OnmkoZsj70PJeepfl8HzBl_wFV8qzw_b0Dmi21QFRQ7CeLud06U04MEsOEBTJTl3iLEKGktR-4qBJ1tr6NM_RDG0ZfJXVu7n_C11MpO3I-WVQqt9ZwhqyI6k6iDIQ8y-A-01EuuAGFlTLquAc_UKLiyq6pYLy')">
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold text-sm">DB Shoulder Press</h3>
+                                    <span
+                                        class="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Shoulders</span>
+                                </div>
+                            </div>
+                            <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-3 w-full">
+                                <div>
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Sets</label>
+                                    <input
+                                        class="w-full bg-[#112218] border border-[#244732] rounded px-2 py-1.5 text-white text-sm text-center focus:ring-1 focus:ring-primary focus:border-primary tabular-nums"
+                                        type="number" value="3" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Reps</label>
+                                    <input
+                                        class="w-full bg-[#112218] border border-[#244732] rounded px-2 py-1.5 text-white text-sm text-center focus:ring-1 focus:ring-primary focus:border-primary tabular-nums"
+                                        type="text" value="10-12" />
+                                </div>
+                                <div class="relative">
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Weight</label>
+                                    <input
+                                        class="w-full bg-[#112218] border border-[#244732] rounded px-2 py-1.5 text-white text-sm text-center focus:ring-1 focus:ring-primary focus:border-primary tabular-nums pr-6"
+                                        type="number" value="22" />
+                                    <span
+                                        class="absolute right-2 bottom-1.5 text-xs text-gray-500 pointer-events-none">kg</span>
+                                </div>
+                                <div class="relative">
+                                    <label
+                                        class="block text-[10px] uppercase tracking-wider font-bold text-gray-500 mb-1">Rest</label>
+                                    <div
+                                        class="flex items-center bg-[#112218] border border-[#244732] rounded px-2 py-1.5 focus-within:ring-1 focus-within:ring-primary focus-within:border-primary">
+                                        <span
+                                            class="material-symbols-outlined text-gray-500 text-[14px] mr-1">timer</span>
+                                        <input
+                                            class="w-full bg-transparent border-none p-0 text-white text-sm text-center focus:ring-0"
+                                            type="text" value="60s" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center gap-1 md:ml-4 border-l border-[#244732] pl-4 md:border-l-0 md:pl-0 pt-2 md:pt-0 border-t md:border-t-0 mt-2 md:mt-0 w-full md:w-auto justify-end">
+                                <button
+                                    class="p-1.5 text-gray-500 hover:text-white hover:bg-[#244732] rounded transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
+                                </button>
+                                <button
+                                    class="p-1.5 text-gray-500 hover:text-white hover:bg-[#244732] rounded transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">content_copy</span>
+                                </button>
+                                <button
+                                    class="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Drop Zone / Empty State Indicator -->
+                    <div
+                        class="border-2 border-dashed border-[#244732] rounded-xl p-8 flex flex-col items-center justify-center text-center bg-[#112218]/50 hover:bg-[#112218] hover:border-primary/40 transition-all cursor-pointer group">
+                        <div class="bg-[#244732] rounded-full p-4 mb-3 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-[#93c8a8] text-[32px]">add_circle</span>
+                        </div>
+                        <h3 class="text-white font-medium mb-1">Add Exercise</h3>
+                        <p class="text-gray-500 text-sm">Drag from library or click to browse</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sticky Footer for Mobile / Quick Stats -->
+        <div
+            class="h-14 border-t border-[#244732] bg-surface-dark shrink-0 flex items-center justify-between px-6 text-sm">
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <span class="text-gray-400">Total Sets:</span>
+                    <span class="text-white font-semibold">7</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-gray-400">Est. Duration:</span>
+                    <span class="text-white font-semibold">45 min</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="text-[#93c8a8] hover:text-white text-xs font-medium uppercase tracking-wider flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+                    Clear All
+                </button>
+                <button
+                    class="text-[#93c8a8] hover:text-white text-xs font-medium uppercase tracking-wider flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">save_as</span>
+                    Save Template
+                </button>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

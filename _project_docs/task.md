@@ -1,0 +1,28 @@
+# WRKOUT (formerly FitPro) Setup
+
+- [x] Initialize project structure <!-- id: 0 -->
+- [x] Create `index.html` (Daily Workout Tracker) <!-- id: 1 -->
+- [x] Create `workout-builder.html` <!-- id: 2 -->
+- [x] Create `login.html` <!-- id: 3 -->
+- [x] Create `trainer-dashboard.html` <!-- id: 4 -->
+- [x] Create `analytics.html` <!-- id: 5 -->
+- [x] Create `clients.html` <!-- id: 6 -->
+- [x] Create `settings.html` (Branding & Gamification) <!-- id: 7 -->
+- [x] Verify pages <!-- id: 8 -->
+- [x] Rebrand to "WRKOUT" <!-- id: 9 -->
+- [x] Backend Implementation (Supabase) <!-- id: 10 -->
+    - [x] Obtain Supabase Credentials (User Action) <!-- id: 11 -->
+    - [x] Create `register.html` <!-- id: 12 -->
+    - [x] Create `auth.js` & `supabase.js` modules <!-- id: 13 -->
+    - [x] Implement Login Logic <!-- id: 14 -->
+    - [x] Implement Registration Logic <!-- id: 15 -->
+    - [x] Implement Route Guard (Protected Pages) <!-- id: 16 -->
+    - [x] Database Schema Setup (SQL) <!-- id: 17 -->
+- [x] Polishing Login Page <!-- id: 18 -->
+    - [x] Implement "Forgot Password" Modal <!-- id: 19 -->
+    - [x] Implement "Need Help" Link <!-- id: 20 -->
+- [x] Role-Based Access Control <!-- id: 21 -->
+    - [x] Create `gym-dashboard.html` <!-- id: 22 -->
+    - [x] Update `register.html` with Gym role <!-- id: 23 -->
+    - [x] Update `auth.js` to enforce role separation <!-- id: 24 -->
+    - [x] Update `login.html` to pass selected role <!-- id: 25 -->

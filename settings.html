@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - WRKOUT</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "primary-content": "#003816",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#1A2E22",
+                        "surface-light": "#FFFFFF",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #112117;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #244732;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2f5e42;
+        }
+
+        /* Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #19e66b;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #19e66b;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-hidden">
+
+    <div class="flex h-screen w-full overflow-hidden">
+
+        <!-- Side Navigation -->
+        <aside class="hidden w-64 flex-col bg-[#112218] border-r border-[#244732] lg:flex flex-shrink-0">
+            <div class="flex h-full flex-col justify-between p-4">
+                <div class="flex flex-col gap-6">
+                    <!-- User Profile -->
+                    <div class="flex gap-3 items-center pb-4 border-b border-[#244732]">
+                        <div class="size-12 rounded-full bg-cover bg-center bg-no-repeat shadow-lg ring-2 ring-[#19e66b]/20"
+                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqUCg2DxGuHY5XkTixD0Cg3PIjFkGc00grrWscZOpiNms0WJEr7jlG6QkG848X3g9E53T38AA0GubFdIzsL-lYRolCJLgPG5d9NEWiSlo9LneO4ZZTjL_wzGVe3sdzehmxcMAd94kMFhVFA7j68CD7G0LqtRso5bwql_v4h91v9YVO-y1fnpOgIyLGrjhU16IuLMKqNG7KkxP_gPQymuu8-7re-h-5tajucPsLMrUosL6CoN2UyHV2VOlx2lHc8U3FwaUU-bc9kNti');"
+                            role="img" aria-label="Profile picture of a fitness trainer">
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-white text-base font-medium leading-normal">WRKOUT</h1>
+                            <p class="text-[#93c8a8] text-xs font-medium uppercase tracking-wider">Pro Trainer</p>
+                        </div>
+                    </div>
+
+                    <!-- Nav Links -->
+                    <nav class="flex flex-col gap-2">
+                        <a href="trainer-dashboard.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                            <span
+                                class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">dashboard</span>
+                            <span class="text-sm font-medium">Dashboard</span>
+                        </a>
+                        <a href="clients.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                            <span class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">group</span>
+                            <span class="text-sm font-medium">Clients</span>
+                        </a>
+                        <a href="workout-builder.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                            <span
+                                class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">fitness_center</span>
+                            <span class="text-sm font-medium">Workouts</span>
+                        </a>
+                        <a href="analytics.html"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white hover:bg-[#244732] transition-colors group">
+                            <span
+                                class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">monitoring</span>
+                            <span class="text-sm font-medium">Analytics</span>
+                        </a>
+
+                        <!-- Active State -->
+                        <div class="mt-4">
+                            <a href="#"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#19e66b]/10 text-[#19e66b] ring-1 ring-[#19e66b]/20">
+                                <span class="material-symbols-outlined fill-current">settings</span>
+                                <span class="text-sm font-bold">Settings</span>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Bottom Links -->
+                <div class="flex flex-col gap-2 pt-4 border-t border-[#244732]">
+                    <a href="login.html"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-400 hover:bg-red-900/20 transition-colors group">
+                        <span class="material-symbols-outlined group-hover:text-red-300">logout</span>
+                        <span class="text-sm font-medium">Log Out</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+            <!-- Header -->
+            <header
+                class="h-16 border-b border-[#244732] bg-[#112117]/80 backdrop-blur-md flex items-center justify-between px-6 z-10">
+                <div class="flex items-center gap-4">
+                    <button class="lg:hidden p-2 text-white hover:bg-[#244732] rounded-lg">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg font-bold text-white tracking-tight">Settings</h2>
+                        <p class="text-xs text-[#93c8a8]">Manage branding, gamification, and account</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto p-6 scroll-smooth">
+                <div class="max-w-[1000px] mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+                    <!-- Settings Nav -->
+                    <div class="lg:col-span-1">
+                        <nav class="flex flex-col gap-1 sticky top-0">
+                            <a href="#"
+                                class="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#244732] text-white font-medium border-l-4 border-[#19e66b]">
+                                <span class="material-symbols-outlined text-[#19e66b] text-[20px]">palette</span>
+                                <span class="text-sm">Branding</span>
+                            </a>
+                            <a href="#"
+                                class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#93c8a8] hover:bg-[#244732]/50 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">stadia_controller</span>
+                                <span class="text-sm">Gamification</span>
+                            </a>
+                            <a href="#"
+                                class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#93c8a8] hover:bg-[#244732]/50 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">person</span>
+                                <span class="text-sm">Profile</span>
+                            </a>
+                            <a href="#"
+                                class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#93c8a8] hover:bg-[#244732]/50 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">credit_card</span>
+                                <span class="text-sm">Billing</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- Settings Content -->
+                    <div class="lg:col-span-3 flex flex-col gap-8">
+
+                        <!-- Branding Section -->
+                        <section class="flex flex-col gap-6">
+                            <div class="pb-4 border-b border-[#244732]">
+                                <h3 class="text-xl font-bold text-white">Branding</h3>
+                                <p class="text-sm text-[#93c8a8] mt-1">Customize the look and feel of your client app.
+                                </p>
+                            </div>
+
+                            <!-- Logo Upload -->
+                            <div class="bg-[#1A2E22] border border-[#244732] rounded-xl p-6">
+                                <h4 class="text-white font-bold mb-4">Logo</h4>
+                                <div class="flex items-start gap-6">
+                                    <div
+                                        class="size-20 rounded-xl bg-[#112117] border border-[#244732] flex items-center justify-center text-[#19e66b]">
+                                        <span class="material-symbols-outlined text-[32px]">fitness_center</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div
+                                            class="border-2 border-dashed border-[#244732] rounded-lg p-6 flex flex-col items-center justify-center gap-2 hover:border-[#19e66b]/50 hover:bg-[#244732]/40 transition-colors cursor-pointer group">
+                                            <span
+                                                class="material-symbols-outlined text-[#93c8a8] group-hover:text-white">cloud_upload</span>
+                                            <span class="text-xs text-[#93c8a8]">Click to upload or drag and drop</span>
+                                            <span class="text-[10px] text-[#93c8a8]/60">SVG, PNG, JPG (max
+                                                800x800px)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Colors -->
+                            <div class="bg-[#1A2E22] border border-[#244732] rounded-xl p-6">
+                                <h4 class="text-white font-bold mb-4">Colors</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs text-[#93c8a8] font-medium">Primary Color</label>
+                                        <div
+                                            class="flex items-center gap-3 bg-[#112117] p-2 rounded-lg border border-[#244732]">
+                                            <div
+                                                class="size-8 rounded bg-[#19e66b] shadow-sm cursor-pointer hover:scale-105 transition-transform">
+                                            </div>
+                                            <input type="text" value="#19E66B"
+                                                class="bg-transparent border-none text-white text-sm font-mono focus:ring-0 p-0 w-full"
+                                                spellcheck="false">
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs text-[#93c8a8] font-medium">Background Theme</label>
+                                        <select
+                                            class="bg-[#112117] text-white text-sm border border-[#244732] rounded-lg px-3 py-2.5 focus:ring-1 focus:ring-[#19e66b] focus:border-[#19e66b]">
+                                            <option>Midnight Forest (Default)</option>
+                                            <option>Deep Ocean</option>
+                                            <option>Charcoal Black</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- App Info -->
+                            <div class="bg-[#1A2E22] border border-[#244732] rounded-xl p-6">
+                                <h4 class="text-white font-bold mb-4">App Information</h4>
+                                <div class="grid grid-cols-1 gap-6">
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs text-[#93c8a8] font-medium">App Name</label>
+                                        <input type="text" value="WRKOUT Elite"
+                                            class="bg-[#112117] text-white text-sm border border-[#244732] rounded-lg px-4 py-2.5 focus:ring-1 focus:ring-[#19e66b] focus:border-[#19e66b] placeholder-[#244732]">
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs text-[#93c8a8] font-medium">App Description</label>
+                                        <textarea
+                                            class="bg-[#112117] text-white text-sm border border-[#244732] rounded-lg px-4 py-2.5 focus:ring-1 focus:ring-[#19e66b] focus:border-[#19e66b] placeholder-[#244732] h-24 resize-none">The ultimate fitness companion for elite athletes.</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Gamification Preview (Just to show it exists) -->
+                        <section class="flex flex-col gap-6 opacity-60">
+                            <div class="pb-4 border-b border-[#244732] flex justify-between items-center">
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">Gamification</h3>
+                                    <p class="text-sm text-[#93c8a8] mt-1">Manage points, levels, and badges.</p>
+                                </div>
+                                <span class="text-xs bg-[#244732] text-[#93c8a8] px-2 py-1 rounded">Coming Soon</span>
+                            </div>
+                        </section>
+
+                        <!-- Save Actions -->
+                        <div class="flex justify-end pt-4 border-t border-[#244732]">
+                            <button
+                                class="px-6 py-2.5 bg-[#19e66b] hover:bg-[#15c55b] text-[#112117] font-bold rounded-lg transition-colors shadow-lg shadow-[#19e66b]/20">
+                                Save Changes
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        // No JS logic here as per instructions, just purely layout
+    </script>
+</body>
+
+</html>
