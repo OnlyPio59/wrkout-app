@@ -50,7 +50,6 @@ const auth = {
             if (selectedRole && userRole.toLowerCase() !== selectedRole.toLowerCase()) {
                 // Formatting for nice error message
                 const actualRoleDisplay = userRole.charAt(0).toUpperCase() + userRole.slice(1);
-                const selectedRoleDisplay = selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1);
 
                 // Logout immediately to clear the session we just created
                 await window.supabaseClient.auth.signOut();
@@ -69,7 +68,24 @@ const auth = {
             return { success: true, user, role: userRole };
         } catch (error) {
             console.error('Login Error:', error.message);
-            // If it's our custom error, it's safe to show. If it's Supabase error, show that too.
+            return { success: false, message: error.message };
+        }
+    },
+
+    // Login with Social Provider (Google, Apple)
+    async loginWithProvider(provider) {
+        try {
+            const { data, error } = await window.supabaseClient.auth.signInWithOAuth({
+                provider: provider,
+                options: {
+                    // Redirect back to the current page (or a specific callback page)
+                    redirectTo: window.location.href,
+                }
+            });
+            if (error) throw error;
+            return { success: true, data };
+        } catch (error) {
+            console.error(`${provider} Login Error:`, error.message);
             return { success: false, message: error.message };
         }
     },
