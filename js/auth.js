@@ -6,7 +6,7 @@
 
 const auth = {
     // Register a new user
-    async register(email, password, role, fullName) {
+    async register(email, password, role, fullName, username) {
         try {
             // 1. Sign up data
             const { data, error } = await window.supabaseClient.auth.signUp({
@@ -15,7 +15,8 @@ const auth = {
                 options: {
                     data: {
                         full_name: fullName,
-                        role: role
+                        role: role,
+                        username: username // Add username to metadata
                     }
                 }
             });

@@ -60,13 +60,13 @@ async function loadClients(trainerId) {
 
 function renderClientList(clients, tableBody) {
     tableBody.innerHTML = clients.map(client => `
-        <tr class="hover:bg-white/5 transition-colors cursor-pointer" onclick="openClientDrawer('${client.id}', '${client.client_email}')">
+        <tr class="hover:bg-white/5 transition-colors cursor-pointer" onclick="openClientDrawer('${client.id}', '${client.client_username || client.client_email}')">
             <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                     <div class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                        ${client.client_email.substring(0, 2).toUpperCase()}
+                        ${(client.client_username || client.client_email || '?').substring(0, 2).toUpperCase()}
                     </div>
-                    <span class="font-medium text-white">${client.client_email}</span>
+                    <span class="font-medium text-white">${client.client_username || client.client_email}</span>
                 </div>
             </td>
             <td class="px-6 py-4">
@@ -89,48 +89,63 @@ function renderClientList(clients, tableBody) {
 }
 
 async function inviteClient(trainerId) {
-    const emailInput = document.getElementById('clientEmailInput');
+    const usernameInput = document.getElementById('clientUsernameInput');
     const sendBtn = document.getElementById('sendInviteBtn');
     const errorMessage = document.getElementById('modalErrorMessage');
-    const email = emailInput.value;
+    const username = usernameInput.value.trim();
 
     errorMessage.classList.add('hidden');
     sendBtn.disabled = true;
-    sendBtn.textContent = 'Sending...';
+    sendBtn.textContent = 'Searching...';
 
     try {
+        // 1. Search for user profile by username
+        const { data: profile, error: searchError } = await window.supabaseClient
+            .from('profiles')
+            .select('id, username, email') // We might not be able to select email if RLS forbid it, but username/id is fine
+            .eq('username', username)
+            .single();
+
+        if (searchError || !profile) {
+            throw new Error(`User '${username}' not found. Please ask them to register first.`);
+        }
+
+        // 2. Check if relationship already exists
         const { data: existing } = await window.supabaseClient
             .from('trainer_clients')
             .select('id')
             .eq('trainer_id', trainerId)
-            .eq('client_email', email)
+            .eq('client_id', profile.id)
             .single();
 
         if (existing) {
             throw new Error('This client is already in your list.');
         }
 
+        // 3. Add to trainer_clients table
+        // We use client_id now. client_email is optional/nullable.
         const { error: insertError } = await window.supabaseClient
             .from('trainer_clients')
             .insert([{
                 trainer_id: trainerId,
-                client_email: email,
-                status: 'pending'
+                client_id: profile.id,
+                client_username: profile.username,
+                status: 'active' // Auto-accept for now as per request "invite them" -> adds them
             }]);
 
         if (insertError) throw insertError;
 
         closeAddClientModal();
         loadClients(trainerId);
-        alert(`Invitation sent to ${email} (simulated). Added to your list.`);
+        alert(`Successfully added ${username} to your clients!`);
 
     } catch (error) {
         console.error('Invite Error:', error);
-        errorMessage.textContent = error.message || 'Failed to invite client.';
+        errorMessage.textContent = error.message || 'Failed to add client.';
         errorMessage.classList.remove('hidden');
     } finally {
         sendBtn.disabled = false;
-        sendBtn.textContent = 'Send Invite';
+        sendBtn.textContent = 'Add Client';
     }
 }
 
