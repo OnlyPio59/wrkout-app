@@ -78,7 +78,9 @@ const auth = {
     async resetPassword(email) {
         try {
             const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
-                redirectTo: 'http://localhost:3000/reset-password.html',
+                // Dynamically build the redirect URL based on current environment
+                // Works for both localhost:3000 and https://username.github.io/repo-name/
+                redirectTo: window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/reset-password.html',
             });
             if (error) throw error;
             return { success: true };
