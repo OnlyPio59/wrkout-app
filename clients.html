@@ -193,210 +193,102 @@
                         </div>
                     </div>
 
-                    <!-- Client Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
-                        <!-- Client Card 1 (Active) -->
-                        <div
-                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:translate-y-[-2px] hover:border-[#19e66b]/30 transition-all duration-300 group">
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-[#19e66b]"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuM0jBvF_w0X_C-e4f_zVeX-w9OswN7sXW5jKq5m7H_0f9k_A8_V7l3m0o2p_R7q6d-4Wn1t8y9u0i2o3p4a5s6d7f8g9h0j1k2l3m4n5o6p7q8r9s0=s120-c');">
-                                    </div>
-                                    <div>
-                                        <h3 class="text-white font-bold text-sm">Michael Foster</h3>
-                                        <span class="text-[#93c8a8] text-xs">Since Jan 2026</span>
-                                    </div>
-                                </div>
-                                <span
-                                    class="bg-[#19e66b]/10 text-[#19e66b] text-[10px] font-bold px-2 py-1 rounded-full border border-[#19e66b]/20">ACTIVE</span>
-                            </div>
-
-                            <div class="space-y-3 mb-5">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Current Plan</span>
-                                    <span class="text-white font-medium">Hypertrophy Phase 2</span>
-                                </div>
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Last Workout</span>
-                                    <span class="text-white font-medium">Yesterday</span>
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <div class="flex justify-between items-center text-xs">
-                                        <span class="text-[#93c8a8]">Adherence</span>
-                                        <span class="text-[#19e66b] font-bold">92%</span>
-                                    </div>
-                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
-                                        <div class="h-full bg-[#19e66b] rounded-full" style="width: 92%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-2">
-                                <button
-                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
-                                <button
-                                    class="flex-1 bg-[#19e66b] text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-[#15c55b] transition-colors">Message</button>
-                            </div>
+                    <!-- Client List Table (Dynamic) -->
+                    <div class="bg-[#1A2E22] border border-[#244732] rounded-xl overflow-hidden shadow-sm">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-[#112117] text-[#93c8a8] border-b border-[#244732]">
+                                    <tr>
+                                        <th class="px-6 py-4 font-medium uppercase tracking-wider text-xs">Client</th>
+                                        <th class="px-6 py-4 font-medium uppercase tracking-wider text-xs">Status</th>
+                                        <th class="px-6 py-4 font-medium uppercase tracking-wider text-xs">Plan</th>
+                                        <th class="px-6 py-4 font-medium uppercase tracking-wider text-xs">Joined</th>
+                                        <th class="px-6 py-4 font-medium uppercase tracking-wider text-xs text-right">
+                                            Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#244732] text-gray-300">
+                                    <!-- Populated by JS -->
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                            Loading clients...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-
-                        <!-- Client Card 2 (Needs Attention) -->
-                        <div
-                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:translate-y-[-2px] hover:border-red-400/30 transition-all duration-300 group">
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-red-400"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuN9kL3p_J0M1O2P3Q4R5S6T7U8V9W0X1Y2Z3A4B5C6D7E8F9G0H1I2J3K4L5M6N7O8P9Q0R1S2T3U4V5W6X7Y8Z9a0b1c2d3e4f5g6h7i8j9k0l1m2n3o4=s120-c');">
-                                    </div>
-                                    <div>
-                                        <h3 class="text-white font-bold text-sm">Emma Wilson</h3>
-                                        <span class="text-[#93c8a8] text-xs">Since Feb 2026</span>
-                                    </div>
-                                </div>
-                                <span
-                                    class="bg-red-400/10 text-red-400 text-[10px] font-bold px-2 py-1 rounded-full border border-red-400/20">AT
-                                    RISK</span>
-                            </div>
-
-                            <div class="space-y-3 mb-5">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Current Plan</span>
-                                    <span class="text-white font-medium">Strength Basics</span>
-                                </div>
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Last Workout</span>
-                                    <span class="text-red-400 font-medium">5 days ago</span>
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <div class="flex justify-between items-center text-xs">
-                                        <span class="text-[#93c8a8]">Adherence</span>
-                                        <span class="text-red-400 font-bold">45%</span>
-                                    </div>
-                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
-                                        <div class="h-full bg-red-400 rounded-full" style="width: 45%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-2">
-                                <button
-                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
-                                <button
-                                    class="flex-1 bg-red-400 text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-red-500 transition-colors">Nudge</button>
-                            </div>
-                        </div>
-
-                        <!-- Client Card 3 (New) -->
-                        <div
-                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:translate-y-[-2px] hover:border-blue-400/30 transition-all duration-300 group">
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-blue-400"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuP5qR2s_T4U6V7W8X9Y0Z1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V3W4X5Y6Z7a8b9c0d1e2f3g4h5i6j7k8l9m0n1o2p3q4r5s6t7=s120-c');">
-                                    </div>
-                                    <div>
-                                        <h3 class="text-white font-bold text-sm">James Miller</h3>
-                                        <span class="text-[#93c8a8] text-xs">Joined Today</span>
-                                    </div>
-                                </div>
-                                <span
-                                    class="bg-blue-400/10 text-blue-400 text-[10px] font-bold px-2 py-1 rounded-full border border-blue-400/20">NEW</span>
-                            </div>
-
-                            <div class="space-y-3 mb-5">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Current Plan</span>
-                                    <span class="text-white font-medium text-opacity-50 italic">None Assigned</span>
-                                </div>
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Last Workout</span>
-                                    <span class="text-white font-medium">--</span>
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <div class="flex justify-between items-center text-xs">
-                                        <span class="text-[#93c8a8]">Onboarding</span>
-                                        <span class="text-blue-400 font-bold">In Progress</span>
-                                    </div>
-                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
-                                        <div class="h-full bg-blue-400 rounded-full" style="width: 20%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-2">
-                                <button
-                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
-                                <button
-                                    class="flex-1 bg-blue-400 text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-blue-500 transition-colors">Assign
-                                    Plan</button>
-                            </div>
-                        </div>
-
-                        <!-- Client Card 4 (Active) -->
-                        <div
-                            class="bg-[#1A2E22] border border-[#244732] rounded-xl p-5 shadow-sm hover:border-[#19e66b]/30 transition-colors group">
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="size-12 rounded-full bg-cover bg-center border-2 border-[#19e66b]"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuQ8rT5u_V7W9X0Y1Z2A3B4C5D6E7F8G9H0I1J2K3L4M5N6O7P8Q9R0S1T2U3V4W5X6Y7Z8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8=s120-c');">
-                                    </div>
-                                    <div>
-                                        <h3 class="text-white font-bold text-sm">Olivia Chen</h3>
-                                        <span class="text-[#93c8a8] text-xs">Since Dec 2025</span>
-                                    </div>
-                                </div>
-                                <span
-                                    class="bg-[#19e66b]/10 text-[#19e66b] text-[10px] font-bold px-2 py-1 rounded-full border border-[#19e66b]/20">ACTIVE</span>
-                            </div>
-
-                            <div class="space-y-3 mb-5">
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Current Plan</span>
-                                    <span class="text-white font-medium">Endurance Pro</span>
-                                </div>
-                                <div class="flex justify-between items-center text-xs">
-                                    <span class="text-[#93c8a8]">Last Workout</span>
-                                    <span class="text-white font-medium">2 days ago</span>
-                                </div>
-                                <div class="flex flex-col gap-1">
-                                    <div class="flex justify-between items-center text-xs">
-                                        <span class="text-[#93c8a8]">Adherence</span>
-                                        <span class="text-[#19e66b] font-bold">88%</span>
-                                    </div>
-                                    <div class="w-full h-1.5 bg-[#112117] rounded-full overflow-hidden">
-                                        <div class="h-full bg-[#19e66b] rounded-full" style="width: 88%"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-2">
-                                <button
-                                    class="flex-1 bg-[#112117] text-white text-xs font-medium py-2 rounded-lg border border-[#244732] hover:bg-[#244732] transition-colors">Profile</button>
-                                <button
-                                    class="flex-1 bg-[#19e66b] text-[#112117] text-xs font-bold py-2 rounded-lg hover:bg-[#15c55b] transition-colors">Message</button>
-                            </div>
-                        </div>
-
-                        <!-- Add New Placeholder -->
-                        <button
-                            class="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-[#244732] rounded-xl p-5 hover:border-[#19e66b]/50 hover:bg-[#244732]/20 transition-all duration-300 group h-full min-h-[220px]">
-                            <div
-                                class="size-12 rounded-full bg-[#244732] flex items-center justify-center group-hover:bg-[#19e66b] transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-[#93c8a8] group-hover:text-[#112117]">add</span>
-                            </div>
-                            <span class="text-[#93c8a8] text-sm font-medium group-hover:text-white">Add New
-                                Client</span>
-                        </button>
-
                     </div>
+
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Add Client Modal -->
+    <div id="addClientModal"
+        class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-[#1a2c22] border border-white/10 rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="closeAddClientModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h2 class="text-xl font-bold text-white mb-2">Invite New Client</h2>
+            <p class="text-sm text-gray-400 mb-6">Send an invitation email to add a client to your dashboard.</p>
+
+            <form id="addClientForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-gray-400 mb-1 uppercase tracking-wider">Client
+                        Email</label>
+                    <input type="email" id="clientEmailInput" required
+                        class="w-full bg-[#112117] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#19e66b] transition-all"
+                        placeholder="client@example.com">
+                </div>
+                <div id="modalErrorMessage"
+                    class="hidden text-sm text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-500/20"></div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeAddClientModal()"
+                        class="flex-1 py-3 rounded-xl border border-white/10 text-gray-300 hover:bg-white/5 font-medium transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" id="sendInviteBtn"
+                        class="flex-1 py-3 rounded-xl bg-[#19e66b] text-[#112117] hover:bg-[#15c55b] font-bold shadow-[0_0_15px_rgba(25,230,107,0.3)] transition-all">
+                        Send Invite
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Drawer (Hidden by default) -->
+    <div id="clientDrawer"
+        class="fixed inset-y-0 right-0 z-50 w-full max-w-2xl bg-[#1a2c22] border-l border-white/10 transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+        <!-- Content injected via JS -->
+    </div>
+    <!-- Drawer Backdrop -->
+    <div id="drawerBackdrop" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden transition-opacity"
+        onclick="closeClientDrawer()"></div>
+
+    <script src="js/trainer.js"></script>
     <script>
-        // No JS logic here as per instructions, just purely layout
+        // Modal functions
+        const addClientModal = document.getElementById('addClientModal');
+        const addClientForm = document.getElementById('addClientForm');
+
+        function openAddClientModal() {
+            addClientModal.classList.remove('hidden');
+        }
+
+        function closeAddClientModal() {
+            addClientModal.classList.add('hidden');
+            document.getElementById('modalErrorMessage').classList.add('hidden');
+            addClientForm.reset();
+        }
+
+        // Connect "Add Client" buttons
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes('Add Client')) {
+                btn.onclick = openAddClientModal;
+            }
+        });
     </script>
 </body>
 
