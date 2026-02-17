@@ -18,11 +18,13 @@ alter table public.profiles enable row level security;
 
 -- 3. Profiles Policies
 -- Public Read: Everyone can read profiles (needed for search)
+drop policy if exists "Public profiles are viewable by everyone" on public.profiles;
 create policy "Public profiles are viewable by everyone"
   on public.profiles for select
   using (true);
 
 -- User Update: Users can update their own profile
+drop policy if exists "Users can update own profile" on public.profiles;
 create policy "Users can update own profile"
   on public.profiles for update
   using (auth.uid() = id);
