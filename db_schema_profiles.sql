@@ -4,10 +4,14 @@ create table if not exists public.profiles (
   username text unique,
   full_name text,
   role text check (role in ('trainer', 'client')),
+  email text, -- Added for Username login resolution
   avatar_url text,
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now()
 );
+
+-- Ensure email column exists (safe to run if table already exists)
+alter table public.profiles add column if not exists email text;
 
 -- 2. Enable RLS on Profiles
 alter table public.profiles enable row level security;
@@ -27,12 +31,13 @@ create policy "Users can update own profile"
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.profiles (id, full_name, role, username)
+  insert into public.profiles (id, full_name, role, username, email)
   values (
     new.id,
     new.raw_user_meta_data->>'full_name',
     new.raw_user_meta_data->>'role',
-    new.raw_user_meta_data->>'username'
+    new.raw_user_meta_data->>'username',
+    new.email
   );
   return new;
 end;

@@ -34,8 +34,25 @@ const auth = {
     },
 
     // Login user
-    async login(email, password, selectedRole) {
+    async login(identifier, password, selectedRole) {
         try {
+            let email = identifier;
+
+            // 1. Check if identifier looks like an email. If not, treat as username and resolve to email.
+            if (!identifier.includes('@')) {
+                const { data: profile, error } = await window.supabaseClient
+                    .from('profiles')
+                    .select('email')
+                    .eq('username', identifier)
+                    .single();
+
+                if (error || !profile || !profile.email) {
+                    throw new Error('Username not found or invalid.');
+                }
+
+                email = profile.email;
+            }
+
             const { data, error } = await window.supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password
