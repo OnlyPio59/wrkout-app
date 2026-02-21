@@ -6,7 +6,7 @@
 
 const auth = {
     // Register a new user
-    async register(email, password, role, fullName, username) {
+    async register(email, password, username) {
         try {
             // 1. Sign up data
             const { data, error } = await window.supabaseClient.auth.signUp({
@@ -14,8 +14,6 @@ const auth = {
                 password: password,
                 options: {
                     data: {
-                        full_name: fullName,
-                        role: role,
                         username: username // Add username to metadata
                     }
                 }
@@ -61,18 +59,31 @@ const auth = {
             if (error) throw error;
 
             const user = data.user;
-            const userRole = user.user_metadata.role || 'client'; // Default to client if undefined
 
-            // STRICT CHECK: Ensure selected authentication tab matches the user's actual role
-            // Compare case-insensitive just in case
-            if (selectedRole && userRole.toLowerCase() !== selectedRole.toLowerCase()) {
-                // Formatting for nice error message
-                const actualRoleDisplay = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+            // FETCH PROFILE to check onboarding status
+            const { data: profileData, error: profileError } = await window.supabaseClient
+                .from('profiles')
+                .select('role')
+                .eq('id', user.id)
+                .single();
 
-                // Logout immediately to clear the session we just created
-                await window.supabaseClient.auth.signOut();
+            if (profileError) {
+                console.error("Error fetching profile during login:", profileError);
+                // Proceed cautiously, maybe they just signed up and trigger hasn't finished (rare but possible)
+            }
 
-                throw new Error(`This account is registered as a ${actualRoleDisplay}. Please switch to the ${actualRoleDisplay} login tab.`);
+            const userRole = (profileData && profileData.role) ? profileData.role : null;
+
+            // If no role, they need onboarding
+            if (!userRole) {
+                // Save basic session info but don't set role yet
+                localStorage.setItem('wrkout_user', JSON.stringify({
+                    id: user.id,
+                    email: user.email,
+                    role: null,
+                    name: user.user_metadata.full_name || 'User'
+                }));
+                return { success: true, user, needsOnboarding: true };
             }
 
             // Save basic session info to local storage for quick UI access

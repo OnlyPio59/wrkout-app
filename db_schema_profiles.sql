@@ -3,7 +3,7 @@ create table if not exists public.profiles (
   id uuid references auth.users(id) on delete cascade primary key,
   username text unique,
   full_name text,
-  role text check (role in ('trainer', 'client')),
+  role text check (role is null or role in ('trainer', 'client', 'gym')),
   email text, -- Added for Username login resolution
   avatar_url text,
   created_at timestamp with time zone default now(),

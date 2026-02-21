@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>WRKOUT - Complete Your Profile</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#1a3224",
+                        "border-dark": "#244732",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-dark font-display text-white antialiased min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <!-- Background Decor -->
+    <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+        <div class="absolute top-[10%] left-[20%] w-[500px] h-[500px] rounded-full bg-primary/20 blur-[120px]"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 w-full max-w-4xl bg-[#1a2c22]/90 backdrop-blur-xl border border-border-dark rounded-3xl p-8 sm:p-12 shadow-2xl transition-all duration-500 overflow-hidden"
+        id="onboardingContainer">
+
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 text-primary mb-4">
+                <span class="material-symbols-outlined text-4xl">rocket_launch</span>
+            </div>
+            <h1 class="text-3xl font-black tracking-tight mb-2">Welcome to WRKOUT</h1>
+            <p class="text-gray-400">Let's finish setting up your account. How do you want to use WRKOUT?</p>
+        </div>
+
+        <!-- Step 1: Role Selection -->
+        <div id="step1_roles"
+            class="grid sm:grid-cols-3 gap-6 transition-all duration-500 transform translate-x-0 opacity-100">
+
+            <!-- Client Card -->
+            <button onclick="selectRole('client')"
+                class="group relative flex flex-col items-center p-6 bg-surface-dark border border-border-dark rounded-2xl hover:border-primary/50 hover:bg-white/5 transition-all text-left text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-dark">
+                <span
+                    class="material-symbols-outlined text-4xl text-gray-400 group-hover:text-primary transition-colors mb-4">person</span>
+                <h3 class="text-lg font-bold mb-2 w-full text-center">I am a Client</h3>
+                <p class="text-sm text-gray-400 text-center">I want to track my workouts, find trainers, and achieve my
+                    fitness goals.</p>
+            </button> <!-- Added closing tag for button -->
+
+            <!-- Trainer Card -->
+            <button onclick="selectRole('trainer')"
+                class="group relative flex flex-col items-center p-6 bg-surface-dark border border-border-dark rounded-2xl hover:border-primary/50 hover:bg-white/5 transition-all text-left text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-dark">
+                <span
+                    class="material-symbols-outlined text-4xl text-gray-400 group-hover:text-primary transition-colors mb-4">exercise</span>
+                <h3 class="text-lg font-bold mb-2 w-full text-center">I am a Trainer</h3>
+                <p class="text-sm text-gray-400 text-center">I want to manage my clients, assign workout plans, and grow
+                    my business.</p>
+            </button> <!-- Added closing tag for button -->
+
+            <!-- Gym Card -->
+            <button onclick="selectRole('gym')"
+                class="group relative flex flex-col items-center p-6 bg-surface-dark border border-border-dark rounded-2xl hover:border-primary/50 hover:bg-white/5 transition-all text-left text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-dark">
+                <span
+                    class="material-symbols-outlined text-4xl text-gray-400 group-hover:text-primary transition-colors mb-4">apartment</span>
+                <h3 class="text-lg font-bold mb-2 w-full text-center">I represent a Gym</h3>
+                <p class="text-sm text-gray-400 text-center">I want to manage my facility's trainers, members, and
+                    oversee operations.</p>
+            </button> <!-- Added closing tag for button -->
+
+        </div>
+
+        <!-- Step 2: Profile Details (Hidden Initially) -->
+        <div id="step2_details"
+            class="hidden flex flex-col items-center transition-all duration-500 transform translate-x-full opacity-0">
+            <button onclick="goBack()"
+                class="self-start flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors mb-6">
+                <span class="material-symbols-outlined text-lg mr-1">arrow_back</span>
+                Back to roles
+            </button>
+
+            <h2 class="text-2xl font-bold mb-6 w-full text-center" id="roleTitle">Complete Profile</h2>
+
+            <form id="detailsForm" class="w-full max-w-md space-y-5">
+
+                <!-- Dynamic Fields Container -->
+                <div id="dynamicFields" class="space-y-5">
+                    <!-- Fields injected here via JS -->
+                </div>
+
+                <div id="errorMessage"
+                    class="hidden p-3 rounded-lg bg-red-400/10 border border-red-500/20 text-red-400 text-sm text-center">
+                </div>
+
+                <button id="submitBtn"
+                    class="w-full flex items-center justify-center py-4 px-4 rounded-xl text-base font-bold text-background-dark bg-primary hover:bg-[#15c55b] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-primary transition-all shadow-[0_0_20px_rgba(25,230,107,0.3)] mt-8"
+                    type="submit">
+                    Complete Setup
+                    <span class="material-symbols-outlined ml-2">check_circle</span>
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script> <!-- Auth check happens here -->
+    <script src="js/onboarding.js"></script>
+</body>
+
+</html>

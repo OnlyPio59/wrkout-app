@@ -69,37 +69,6 @@
                 <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white mb-2">Welcome Back</h1>
                 <p class="text-gray-400 text-sm">Please enter your details to sign in.</p>
             </div>
-            <!-- Role Switcher (Tabs) -->
-            <div class="mb-8">
-                <div aria-label="User Role Selection"
-                    class="flex p-1 bg-surface-dark/50 border border-border-dark rounded-xl" role="group">
-                    <label class="flex-1 relative cursor-pointer group">
-                        <input checked="" class="peer sr-only" name="role" type="radio" value="Client" />
-                        <div
-                            class="flex items-center justify-center py-2.5 px-1 sm:px-3 rounded-lg text-xs sm:text-sm font-medium text-gray-400 transition-all duration-200 peer-checked:bg-background-dark peer-checked:text-white peer-checked:shadow-sm peer-checked:ring-1 peer-checked:ring-primary/20 hover:text-gray-200">
-                            <span
-                                class="material-symbols-outlined text-base sm:text-lg mr-1 sm:mr-1.5 filled">person</span>
-                            Client
-                        </div>
-                    </label>
-                    <label class="flex-1 relative cursor-pointer group">
-                        <input class="peer sr-only" name="role" type="radio" value="Trainer" />
-                        <div
-                            class="flex items-center justify-center py-2.5 px-1 sm:px-3 rounded-lg text-xs sm:text-sm font-medium text-gray-400 transition-all duration-200 peer-checked:bg-background-dark peer-checked:text-white peer-checked:shadow-sm peer-checked:ring-1 peer-checked:ring-primary/20 hover:text-gray-200">
-                            <span class="material-symbols-outlined text-base sm:text-lg mr-1 sm:mr-1.5">exercise</span>
-                            Trainer
-                        </div>
-                    </label>
-                    <label class="flex-1 relative cursor-pointer group">
-                        <input class="peer sr-only" name="role" type="radio" value="Gym" />
-                        <div
-                            class="flex items-center justify-center py-2.5 px-1 sm:px-3 rounded-lg text-xs sm:text-sm font-medium text-gray-400 transition-all duration-200 peer-checked:bg-background-dark peer-checked:text-white peer-checked:shadow-sm peer-checked:ring-1 peer-checked:ring-primary/20 hover:text-gray-200">
-                            <span class="material-symbols-outlined text-base sm:text-lg mr-1 sm:mr-1.5">apartment</span>
-                            Gym
-                        </div>
-                    </label>
-                </div>
-            </div>
             <!-- Login Form -->
             <form id="loginForm" class="space-y-5">
                 <!-- Identifier Field -->
@@ -347,15 +316,15 @@
             const identifier = document.getElementById('identifier').value;
             const password = document.getElementById('password').value;
 
-            // Get selected role from the radio buttons (tabs)
-            const selectedRoleElement = document.querySelector('input[name="role"]:checked');
-            // If no radio is checked (shouldn't happen due to 'checked' attr), default to first or handle error
-            const selectedRole = selectedRoleElement ? selectedRoleElement.value.toLowerCase() : 'client';
-
-            // Pass selectedRole to auth.login for strict verification
-            const result = await auth.login(identifier, password, selectedRole);
+            // Pass undefined or null for selectedRole since it's no longer selected upfront
+            const result = await auth.login(identifier, password, null);
 
             if (result.success) {
+                if (result.needsOnboarding) {
+                    window.location.href = 'onboarding.html';
+                    return;
+                }
+
                 const role = result.role; // This is the verified role from DB
 
                 // Strict Redirection
